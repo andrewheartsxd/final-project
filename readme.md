@@ -3,6 +3,7 @@
 Website dedicated to helping men who have trouble deciding on what they should wear each day.
 
 Focus on men's clothes
+
 Minimum viable product:
   Drag-drop photos of clothing into box.
   User will categorize each picture.
