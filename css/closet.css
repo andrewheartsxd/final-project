@@ -5,17 +5,34 @@
 .top-section{
   margin-top: 100px;
   background-color: white;
-  height: 250px;
+  height: 270px;
+  width: 20em;
   opacity: 0.8;
   border-radius: 5px;
+  overflow-y: hidden;
+  overflow-x: scroll;
+}
+
+#top-images{
+  width: auto;
+  white-space: nowrap;
+  padding: 10px 10px 10px 10px;
 }
 
 .bottom-section{
   margin-top: 10px;
   background-color: white;
-  height: 250px;
+  height: 270px;
   opacity: 0.8;
   border-radius: 5px;
+  overflow-y: hidden;
+  overflow-x: scroll;
+}
+
+#bottom-images{
+  width: auto;
+  white-space: nowrap;
+  padding: 10px 10px 10px 10px;
 }
 
 #generate{

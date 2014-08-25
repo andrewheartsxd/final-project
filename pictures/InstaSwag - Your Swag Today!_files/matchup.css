@@ -7,7 +7,7 @@
 }
 
 .matchbox2{
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 #match-top, #match-bottom{
@@ -24,7 +24,7 @@
 
 #generate{
   position: absolute;
-  margin-top: 400px;
+  margin-top: 410px;
   width: 130px;
   height: 50px;
   border-radius: 5px;
