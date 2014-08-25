@@ -11,12 +11,12 @@ function User(name){
 function Rack() {
   this.item = new Array();
   this.index = 0;
-  this.addToRack = function(item) {
-    item[index] = item;
-    index++;
+  this.addToRack = function(clothing) {
+    this.item[this.index] = clothing;
+    this.index++;
   }
-  this.getImgSource(i) = function() {
-    return item[i].picture;
+  this.getImgSource = function(i) {
+    return this.item[i].picture;
   }
 }
 
@@ -40,9 +40,9 @@ var clothingType = ["top", "bottom"];
 // ---------- SIGNUP BUTTON ----------
 // Creates userObject on sign up button click. Will need to make similar function on log-in click. Will pass userObject to memory.
 $('#signUpButton').on("click", function() {
-  var username = $("# username").val();
+  var username = $("#username").val();
   var userObject = new User(username);
-  localstorage.setItem("User", JSON.stringify(userObject));
+  localStorage.setItem("User", JSON.stringify(userObject));
 });
 
 
@@ -58,7 +58,7 @@ $("#add-item").on("click", function() {
   else {
     var source = /*picture source */
     clothing = new Clothing(type, color, source);
-    var userObject = localstorage.getItem("UserKey");
+    var userObject = localStorage.getItem("UserKey");
     userObject = JSON.parse(userObject);
     if(clothing.type === clothingType[0]) {
       userObject.racks[0].addToRack(clothing);
@@ -66,7 +66,7 @@ $("#add-item").on("click", function() {
     else if (clothing.type === clothingType[1]) {
       userObject.racks[1].addToRack(clothing);
     }
-    localstorage.setItem("UserKey",JSON.stringify(userObject));
+    localStorage.setItem("UserKey",JSON.stringify(userObject));
   }
 });
 // Returns add-item button to default value on mouseoff.
@@ -77,12 +77,12 @@ $("#add-item").on("mouseleave", function() {
 // ---------- CLOSET PAGE LOAD -----------
 // As soon as the DOM tree is created, will run this function. UserObject is retrived from memory and parsed - <img> tag assigned to top/bottom section with source.
 $(function() {
-  var userObject = localstorage.getItem("UserKey");
+  var userObject = localStorage.getItem("UserKey");
   userObject = JSON.parse(userObject);
-  $.each(userObject.racks[0], function(index, value) {
+  $.each(userObject.racks.item[0], function(index, value) {
     $("#top-images").append("<img src='"+ getImgSource(index) + "'>");
   });
-  $.each(userObject.racks[1], function(index, value) {
+  $.each(userObject.racks.item[1], function(index, value) {
     $("#bottom-images").append("<img src='"+ getImgSource(index) + "'>");
   });
 });
@@ -108,13 +108,13 @@ function pickFirstItem(user) {
   var randomIndex = Math.floor(Math.random() * user.racks[index].length);
 
   var firstClothing = user.racks[index][randomIndex];
-  localstorage.setItem("firstClothing", JSON.stringify(firstClothing));
+  localStorage.setItem("firstClothing", JSON.stringify(firstClothing));
 }
 
 // ---------- PICK NEXT ITEM ----------
 function pickNextItem(user) {
   pickFirstItem(user);
-  var firstClothing = localstorage.getItem("firstClothing");
+  var firstClothing = localStorage.getItem("firstClothing");
   firstClothing = JSON.parse(firstClothing);
 }
 
