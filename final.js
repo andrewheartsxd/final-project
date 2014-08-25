@@ -50,7 +50,7 @@ $('#signUpButton').on("click", function() {
 $("#add-item").on("click", function() {
   var type = $("#type-selector option:selected").attr("value");
   var color = $("#color-selector option:selected").attr("value");
-  if(type === "type" || color === "--color--") {
+  if(type === "--type--" || color === "--color--") {
     $("#add-item").val(Pick Properties);
   }
   else {
