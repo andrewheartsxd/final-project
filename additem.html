@@ -37,25 +37,27 @@
                     <div id="dropbox"></div>
                 </div>
                 <div class="selection-box six columns">
-                    <select name="type" class="selection-type">
+                    <select name="type" id="type-selector" class="selection-type">
                         <option value="type">--type--</option>
-                        <option id="tops" value="color">tops</option>
-                        <option id="bottoms" value="other">bottoms</option>
+                        <option value="top">tops</option>
+                        <option value="bottom">bottoms</option>
                     </select>
-                    <select name="type" class="selection-color">
+                    <select name="type" id="color-selector" class="selection-color">
                         <option value="type">--color--</option>
-                        <option id="black" value="black">black</option>
-                        <option id="white" value="white">white</option>
-                        <option id="grey" value="grey">grey</option>
-                        <option id="blue" value="blue">blue</option>
-                        <option id="red" value="red">red</option>
-                        <option id="green" value="green">green</option>
-                        <option id="beige" value="beige">beige</option>
+                        <option value="black">black</option>
+                        <option value="white">white</option>
+                        <option value="grey">grey</option>
+                        <option value="blue">blue</option>
+                        <option value="red">red</option>
+                        <option value="green">green</option>
+                        <option value="beige">beige</option>
                     </select>
                     <div class="clear"></div>
                     <input type="button" id="add-item" value="add item">
                 </div>
             </div>
         </main>
+        <script src="jquery-1.11.1.min.js"></script>
+        <script src="final.js"></script>
     </body>
 </html>
