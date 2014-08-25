@@ -11,12 +11,13 @@ function User(name){
 function Rack() {
   this.item = new Array();
   this.index = 0;
-  this.addToRack(item) {
+  this.addToRack = function(item) {
     item[index] = item;
     index++;
   }
-  this.getImgSource(i) {
+  this.getImgSource(i) = function() {
     return item[i].picture;
+  }
 }
 
 // colors and type will be passed to the class Clothing in array form (clothingtype[0] for example). This makes it easier to add another color or type later.
@@ -24,7 +25,7 @@ function Clothing(type, color, picture) {
   this.type = type;
   this.color = color;
   this.picture = picture;
-  picked = false;
+  this.picked = false;
 }
 
 
@@ -39,7 +40,7 @@ var clothingType = ["top", "bottom"];
 // ---------- SIGNUP BUTTON ----------
 // Creates userObject on sign up button click. Will need to make similar function on log-in click. Will pass userObject to memory.
 $('#signUpButton').on("click", function() {
-  var username = $("# username").val()
+  var username = $("# username").val();
   var userObject = new User(username);
   localstorage.setItem("User", JSON.stringify(userObject));
 });
@@ -50,27 +51,28 @@ $('#signUpButton').on("click", function() {
 $("#add-item").on("click", function() {
   var type = $("#type-selector option:selected").attr("value");
   var color = $("#color-selector option:selected").attr("value");
+  var clothing;
   if(type === "--type--" || color === "--color--") {
-    $("#add-item").val(Pick Properties);
+    $("#add-item").val("Pick properties");
   }
   else {
     var source = /*picture source */
-    var clothing = new Clothing(type, color, source);
+    clothing = new Clothing(type, color, source);
     var userObject = localstorage.getItem("UserKey");
     userObject = JSON.parse(userObject);
-    if(clothing.type = clothingType[0]) {
+    if(clothing.type === clothingType[0]) {
       userObject.racks[0].addToRack(clothing);
     }
-    if else (clothing.type = clothingType[1]) {
+    else if (clothing.type === clothingType[1]) {
       userObject.racks[1].addToRack(clothing);
     }
-    localstorage.setItem("UserKey",JSON.stringify(userObject)
+    localstorage.setItem("UserKey",JSON.stringify(userObject));
   }
 });
 // Returns add-item button to default value on mouseoff.
 $("#add-item").on("mouseleave", function() {
   $("#add-item").val("add item");
-})
+});
 
 // ---------- CLOSET PAGE LOAD -----------
 // As soon as the DOM tree is created, will run this function. UserObject is retrived from memory and parsed - <img> tag assigned to top/bottom section with source.
@@ -87,21 +89,38 @@ $(function() {
 
 
 
+// --------- PICK LONGEST RACK ---------
+function pickLongestRack(user) {
+  var dummyArray = new Array();
+  $.each(user.racks, function(i, value) {
+    dummyArray[i] = user.racks[i].length;
+  });
+  var maxLengthArray = dummyArray.reduce(function(previous, current) {
+    return previous > current ? previous : current;
+  });
+  return maxLengthArray;
+}
+
+//  ---------- PICK FIRST ITEM -----------
+// Picks the largest rack.
+function pickFirstItem(user) {
+  var index = pickLongestRack(user);
+  var randomIndex = Math.floor(Math.random() * user.racks[index].length);
+
+  var firstClothing = user.racks[index][randomIndex];
+  localstorage.setItem("firstClothing", JSON.stringify(firstClothing));
+}
+
+// ---------- PICK NEXT ITEM ----------
+function pickNextItem(user) {
+  pickFirstItem(user);
+  var firstClothing = localstorage.getItem("firstClothing");
+  firstClothing = JSON.parse(firstClothing);
+}
 
 
 
 
-
-// function pickRandom() {
-//   if(topRack.length =< bottomRack.length {
-//     var startItem = topRack[floor(Math.rand()*(topRack.length - 1))];
-//     return startItem;
-//   }
-//   else {
-//     var startItem = bottomRack[floor(Math.rand()*(bottomRack.length - 1))];
-//     return startItem;
-//   }
-// }
 
 // // Category is either bottomRack
 // function pickClothes(color,category) {
