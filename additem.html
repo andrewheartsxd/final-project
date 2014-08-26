@@ -32,15 +32,16 @@
                 </ul>
                 <div class="dropbox offset-by-four seven columns">
                     <div id="dropbox"></div>
+                    <div id="state"></div>
                 </div>
                 <div class="selection-box five columns">
-                    <select name="type" class="selection-type">
+                    <select name="type" id="type-selector" class="selection-type">
                         <option value="type">--type--</option>
-                        <option id="tops" value="tops">tops</option>
-                        <option id="bottoms" value="bottoms">bottoms</option>
+                        <option id="tops" value="top">tops</option>
+                        <option id="bottoms" value="bottom">bottoms</option>
                     </select>
-                    <select name="type" class="selection-color">
-                        <option value="type">--color--</option>
+                    <select name="color" id="color-selector" class="selection-color">
+                        <option value="color">--color--</option>
                         <option id="black" value="black">black</option>
                         <option id="white" value="white">white</option>
                         <option id="grey" value="grey">grey</option>
