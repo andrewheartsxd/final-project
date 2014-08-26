@@ -12,52 +12,46 @@
         <link href='http://fonts.googleapis.com/css?family=Lobster|Open+Sans|Bree+Serif' rel='stylesheet' type='text/css'>
     </head>
     <body>
-        <img class="background" src="pictures/splash-background.jpg">
-        <div class="backboard">&nbsp;</div>
         <main class="container">
-            <div class="content">
+                <a href="#"><div id="title">InstaSwag<span>™</span></div></a>
                 <header class="sixteen columns">
-                    <a href="#"><img id="fblike" src="pictures/fblike.png"></a>
+                    <div class="fb">
+                        <a href="#"><img id="fblike" src="pictures/fblike.png"></a>
+                    </div>
                     <p id="fbnumber">150k+</p>
-                    <div class="one column">&nbsp;</div>
-                    <a href="#"><div id="title" class="three columns">InstaSwag<span>™</span></div></a>
-                    <ul id="nav-top" class="eleven columns">
-                            <a href="acount.html"><li>account</li></a>
+                    <ul id="nav-top">
+                            <a href="#"><li>account</li></a>
                             <a href="about.html"><li>about</li></a>
                             <a href="contact.html"><li>contact</li></a>
                     </ul>
-                    <div class="clear"></div>
                 </header>
-                <ul id="nav-bottom">
+                <ul id="nav-bottom" class="seven columns">
                     <a href="additem.html"><li id="nav-1" class="two columns">add item</li></a>
                     <a href="closet.html"><li id="nav-2" class="two columns">closet</li></a>
                     <a href="matchup.html"><li id="nav-3" class="two columns">match up!</li></a>
                 </ul>
-                <div class="five columns">&nbsp;</div>
-                <div class="dropbox five columns">
+                <div class="dropbox offset-by-four seven columns">
                     <div id="dropbox"></div>
-                    <div id="state"></div>
                 </div>
-                <div class="selection-box six columns">
-                    <select name="type" id="type-selector" class="selection-type">
+                <div class="selection-box five columns">
+                    <select name="type" class="selection-type">
                         <option value="type">--type--</option>
-                        <option id="tops" value="top">tops</option>
-                        <option id="bottoms" value="bottom">bottoms</option>
+                        <option id="tops" value="tops">tops</option>
+                        <option id="bottoms" value="bottoms">bottoms</option>
                     </select>
-                    <select name="type" id="color-selector" class="selection-color">
+                    <select name="type" class="selection-color">
                         <option value="type">--color--</option>
-                        <option value="black">black</option>
-                        <option value="white">white</option>
-                        <option value="grey">grey</option>
-                        <option value="blue">blue</option>
-                        <option value="red">red</option>
-                        <option value="green">green</option>
-                        <option value="beige">beige</option>
+                        <option id="black" value="black">black</option>
+                        <option id="white" value="white">white</option>
+                        <option id="grey" value="grey">grey</option>
+                        <option id="blue" value="blue">blue</option>
+                        <option id="red" value="red">red</option>
+                        <option id="green" value="green">green</option>
+                        <option id="beige" value="beige">beige</option>
                     </select>
                     <div class="clear"></div>
                     <input type="button" id="add-item" value="add item">
                 </div>
-            </div>
         </main>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
