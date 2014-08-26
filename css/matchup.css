@@ -3,7 +3,7 @@
 }
 
 .matchbox{
-  margin-top: 130px;
+  margin-top: 30px;
 }
 
 .matchbox2{
@@ -11,6 +11,7 @@
 }
 
 #match-top, #match-bottom{
+  position: relative;
   display: block;
   margin: auto;
   background-color: white;
@@ -23,8 +24,8 @@
 
 
 #generate{
-  position: absolute;
-  margin-top: 400px;
+  position: relative;
+  margin-top: 0px;
   width: 130px;
   height: 50px;
   border-radius: 5px;
@@ -47,4 +48,19 @@
   -moz-transition:.3s;
   -webkit-transition:.3s;
   transition:.3s;
+}
+
+@media only screen and (max-width: 767px) {
+
+#nav-3{
+  border-radius: 5px;
+}
+
+#generate{
+  display: block;
+  position: relative;
+  width: 100%;
+  margin-left: 0;
+  font-size: 23px;
+}
 }
