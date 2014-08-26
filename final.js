@@ -33,7 +33,7 @@ function Clothing(type, color, picture) {
 
 // ---------- SETTINGS ----------
 // Declare colors and types within arrays so it will be easy to add things in the future.
-var clothingColors = ["black","white","grey","blue","blue","red","green","beige"];
+var clothingColors = ["black","white","grey","blue","yellow","red","green","beige"];
 var clothingType = ["top", "bottom"];
 
 
@@ -107,7 +107,8 @@ function pickLongestRack(user) {
   var maxLengthArray = dummyArray.reduce(function(previous, current) {
     return previous > current ? previous : current;
   });
-  return maxLengthArray;
+  var index = dummyArray.indexOf(maxLengthArray);
+  return index;
 }
 
 //  ---------- PICK FIRST ITEM -----------
@@ -116,16 +117,41 @@ function pickFirstItem(user) {
   var index = pickLongestRack(user);
   var randomIndex = Math.floor(Math.random() * user.racks[index].length);
 
-  var firstClothing = user.racks[index][randomIndex];
+  var firstClothing = user.racks[index].item[randomIndex];
   localStorage.setItem("firstClothing", JSON.stringify(firstClothing));
 }
 
 // ---------- PICK NEXT ITEM ----------
 function pickNextItem(user) {
   pickFirstItem(user);
-  var firstClothing = localStorage.getItem("firstClothing");
-  firstClothing = JSON.parse(firstClothing);
+  var firstClothing = JSON.parse(localStorage.getItem("firstClothing"));
+  rules(firstClothing);
 }
+
+function rules(firstClothing) {
+  var firstType = firstClothing.type;
+  var firstColor = firstClothing.color;
+
+  switch(firstType) {
+    case "top":
+
+      switch(firstColor) {
+        case "black"
+      }
+
+    break;
+
+    case: "bottom"
+    break;
+  }
+
+
+
+
+
+
+}
+
 
 
 // Image Drag and Drop
@@ -165,26 +191,6 @@ function pickNextItem(user) {
     reader.readAsDataURL(file);
   }
 // })
-
-$('#save').click(saveImage)
-
-function saveImage() {
-
-  var str = $('#dropbox').css("background-image");
-  var src = str.substring(4, str.length - 1);
-  var imgAsDataURL = src
-
-  try {
-    localStorage.setItem("elephant", imgAsDataURL);
-    alert("success")
-  }
-  catch(e) {
-    console.log("Storage failed: " + e)
-  }
-}
-
-
-
 
 // // Category is either bottomRack
 // function pickClothes(color,category) {
