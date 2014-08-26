@@ -11,13 +11,18 @@ function User(name){
 function Rack() {
   this.item = new Array();
   this.index = 0;
-  this.addToRack = function(clothing) {
-    this.item[this.index] = clothing;
-    this.index++;
-  }
-  this.getImgSource = function(i) {
-    return this.item[i].picture;
-  }
+}
+
+function addToRack(clothing) {
+
+
+  rack.index = 0;
+  rack.item[rack.index] = clothing;
+  rack.index++;
+}
+
+function getImgSource(clothing) {
+  return clothing.picture;
 }
 
 // colors and type will be passed to the class Clothing in array form (clothingtype[0] for example). This makes it easier to add another color or type later.
@@ -41,18 +46,25 @@ var clothingType = ["top", "bottom"];
 // Creates userObject on sign up button click. Will need to make similar function on log-in click. Will pass userObject to memory.
 $('#signUpButton').on("click", function() {
   var username = $("#username").val();
-  var userObject = new User(username);
-  localStorage.setItem("UserKey", JSON.stringify(userObject));
-  localStorage.setItem("User", JSON.stringify(userObject));
+
+  if(username === "") {
+    $('#pleasefill').text("You do have to fill this stuff out, you know.")
+  }
+  else {
+    var userObject = new User(username);
+    localStorage.setItem("UserKey", JSON.stringify(userObject));
+    window.location.href = 'closet.html';
+  }
 });
 
 
 // ---------- ADD ITEM BUTTON ---------
 // Creates clothing Object based on user drop. Grabs userObject from memory - parse it - sort it based on type - stringify it - return it to memory. Checks if user selected properties. User gets feedback via add-item button.
 $("#add-item").on("click", function() {
+
   var type = $("#type-selector option:selected").attr("value");
   var color = $("#color-selector option:selected").attr("value");
-  var clothing; //?
+
   if(type === "--type--" || color === "--color--") {
     $("#add-item").val("Pick properties");
   }
@@ -61,7 +73,7 @@ $("#add-item").on("click", function() {
     var wholeString = $('#dropbox').css("background-image");
     var source = wholeString.substring(4, wholeString.length - 1);
 
-    clothing = new Clothing(type, color, source);
+    var clothing = new Clothing(type, color, source);
     var userObject = localStorage.getItem("UserKey");
     userObject = JSON.parse(userObject);
     if(clothing.type === clothingType[0]) {
@@ -159,6 +171,24 @@ function pickNextItem(user) {
     reader.readAsDataURL(file);
   }
 // })
+
+$('#save').click(saveImage)
+
+function saveImage() {
+
+  var str = $('#dropbox').css("background-image");
+  var src = str.substring(4, str.length - 1);
+  var imgAsDataURL = src
+
+  try {
+    localStorage.setItem("elephant", imgAsDataURL);
+    alert("success")
+  }
+  catch(e) {
+    console.log("Storage failed: " + e)
+  }
+}
+
 
 
 

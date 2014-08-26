@@ -84,6 +84,13 @@ body > .container {
   border-bottom-right-radius: 3px;
 }
 
+#pleasefill{
+  color: white;
+  margin: 0 auto;
+  width: 300px;
+  text-align: center;
+}
+
 .signup{
   display: block;
   margin: 0 auto;
