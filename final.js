@@ -5,7 +5,7 @@ function User(name){
   this.racks = [new Rack(), new Rack()];
 }
 
-// Rack's hold the clohting in the "item" array.
+// Rack's hold the clothing in the "item" array.
 // The rack will NOT have any information regarding what type of item it SHOULD be holding. This type of sorting will be taken care of within a separate function.
 // index is used to tell where in the "item" array the piece of clothing is supposed to go.
 function Rack() {
@@ -40,9 +40,9 @@ var clothingType = ["top", "bottom"];
 // ---------- SIGNUP BUTTON ----------
 // Creates userObject on sign up button click. Will need to make similar function on log-in click. Will pass userObject to memory.
 $('#signUpButton').on("click", function() {
-  var username = $("# username").val();
+  var username = $("#username").val();
   var userObject = new User(username);
-  localstorage.setItem("User", JSON.stringify(userObject));
+  localStorage.setItem("UserKey", JSON.stringify(userObject));
 });
 
 
@@ -51,14 +51,17 @@ $('#signUpButton').on("click", function() {
 $("#add-item").on("click", function() {
   var type = $("#type-selector option:selected").attr("value");
   var color = $("#color-selector option:selected").attr("value");
-  var clothing;
+  var clothing; //?
   if(type === "--type--" || color === "--color--") {
     $("#add-item").val("Pick properties");
   }
   else {
-    var source = /*picture source */
+    alert("running");
+    var wholeString = $('#dropbox').css("background-image");
+    var source = wholeString.substring(4, wholeString.length - 1);
+
     clothing = new Clothing(type, color, source);
-    var userObject = localstorage.getItem("UserKey");
+    var userObject = localStorage.getItem("UserKey");
     userObject = JSON.parse(userObject);
     if(clothing.type === clothingType[0]) {
       userObject.racks[0].addToRack(clothing);
@@ -66,7 +69,7 @@ $("#add-item").on("click", function() {
     else if (clothing.type === clothingType[1]) {
       userObject.racks[1].addToRack(clothing);
     }
-    localstorage.setItem("UserKey",JSON.stringify(userObject));
+    localStorage.setItem("UserKey",JSON.stringify(userObject));
   }
 });
 // Returns add-item button to default value on mouseoff.
@@ -77,7 +80,7 @@ $("#add-item").on("mouseleave", function() {
 // ---------- CLOSET PAGE LOAD -----------
 // As soon as the DOM tree is created, will run this function. UserObject is retrived from memory and parsed - <img> tag assigned to top/bottom section with source.
 $(function() {
-  var userObject = localstorage.getItem("UserKey");
+  var userObject = localStorage.getItem("UserKey");
   userObject = JSON.parse(userObject);
   $.each(userObject.racks[0], function(index, value) {
     $("#top-images").append("<img src='"+ getImgSource(index) + "'>");
@@ -108,17 +111,53 @@ function pickFirstItem(user) {
   var randomIndex = Math.floor(Math.random() * user.racks[index].length);
 
   var firstClothing = user.racks[index][randomIndex];
-  localstorage.setItem("firstClothing", JSON.stringify(firstClothing));
+  localStorage.setItem("firstClothing", JSON.stringify(firstClothing));
 }
 
 // ---------- PICK NEXT ITEM ----------
 function pickNextItem(user) {
   pickFirstItem(user);
-  var firstClothing = localstorage.getItem("firstClothing");
+  var firstClothing = localStorage.getItem("firstClothing");
   firstClothing = JSON.parse(firstClothing);
 }
 
 
+// Image Drag and Drop
+// (function dragDrop() {
+
+  var dropbox = $('#dropbox')[0]
+  var state = $('#state')[0]
+
+  // Checks for FileReader
+
+  if(typeof window.FileReader === 'undefined') {
+    state.className = 'fail' ;
+  } else {
+    state.className = 'success';
+    // state.innerHTML = 'File API & FileReader available'
+  }
+
+  dropbox.ondragover = function() {
+    this.className = 'hover'; return false;
+  };
+  dropbox.ondragend = function () {
+    this.className = ''; return false;
+  };
+  dropbox.ondrop = function (e) {
+    this.className = 'dropped';
+    e.preventDefault();
+
+    var file = e.dataTransfer.files[0],
+        reader = new FileReader();
+    reader.onload = function (event) {
+      console.log(event.target);
+      dropbox.style.background = 'url('+ event.target.result + ') no-repeat center';
+    };
+
+    console.log(file);
+    reader.readAsDataURL(file);
+  }
+// })
 
 
 
