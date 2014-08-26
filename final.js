@@ -1,4 +1,4 @@
-// ---------- CLASS/OBJECT ----------
+ // ---------- CLASS/OBJECT ----------
 // User holds two Racks. One for "top" and another for "bottom" The array makes it easy for us to add on another rack for another type of clothing if needed.
 function User(name){
   this.name = name;
@@ -11,12 +11,12 @@ function User(name){
 function Rack() {
   this.item = new Array();
   this.index = 0;
-  this.addToRack = function(item) {
-    item[index] = item;
-    index++;
+  this.addToRack = function(clothing) {
+    this.item[this.index] = clothing;
+    this.index++;
   }
-  this.getImgSource(i) = function() {
-    return item[i].picture;
+  this.getImgSource = function(i) {
+    return this.item[i].picture;
   }
 }
 
@@ -43,6 +43,7 @@ $('#signUpButton').on("click", function() {
   var username = $("#username").val();
   var userObject = new User(username);
   localStorage.setItem("UserKey", JSON.stringify(userObject));
+  localStorage.setItem("User", JSON.stringify(userObject));
 });
 
 
@@ -82,10 +83,10 @@ $("#add-item").on("mouseleave", function() {
 $(function() {
   var userObject = localStorage.getItem("UserKey");
   userObject = JSON.parse(userObject);
-  $.each(userObject.racks[0], function(index, value) {
+  $.each(userObject.racks.item[0], function(index, value) {
     $("#top-images").append("<img src='"+ getImgSource(index) + "'>");
   });
-  $.each(userObject.racks[1], function(index, value) {
+  $.each(userObject.racks.item[1], function(index, value) {
     $("#bottom-images").append("<img src='"+ getImgSource(index) + "'>");
   });
 });
