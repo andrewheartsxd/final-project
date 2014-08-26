@@ -1,11 +1,11 @@
-// ---------- CLASS/OBJECT ----------
+ // ---------- CLASS/OBJECT ----------
 // User holds two Racks. One for "top" and another for "bottom" The array makes it easy for us to add on another rack for another type of clothing if needed.
 function User(name){
   this.name = name;
   this.racks = [new Rack(), new Rack()];
 }
 
-// Rack's hold the clohting in the "item" array.
+// Rack's hold the clothing in the "item" array.
 // The rack will NOT have any information regarding what type of item it SHOULD be holding. This type of sorting will be taken care of within a separate function.
 // index is used to tell where in the "item" array the piece of clothing is supposed to go.
 function Rack() {
@@ -42,6 +42,7 @@ var clothingType = ["top", "bottom"];
 $('#signUpButton').on("click", function() {
   var username = $("#username").val();
   var userObject = new User(username);
+  localStorage.setItem("UserKey", JSON.stringify(userObject));
   localStorage.setItem("User", JSON.stringify(userObject));
 });
 
@@ -51,12 +52,15 @@ $('#signUpButton').on("click", function() {
 $("#add-item").on("click", function() {
   var type = $("#type-selector option:selected").attr("value");
   var color = $("#color-selector option:selected").attr("value");
-  var clothing;
+  var clothing; //?
   if(type === "--type--" || color === "--color--") {
     $("#add-item").val("Pick properties");
   }
   else {
-    var source = /*picture source */
+    alert("running");
+    var wholeString = $('#dropbox').css("background-image");
+    var source = wholeString.substring(4, wholeString.length - 1);
+
     clothing = new Clothing(type, color, source);
     var userObject = localStorage.getItem("UserKey");
     userObject = JSON.parse(userObject);
@@ -119,6 +123,42 @@ function pickNextItem(user) {
 }
 
 
+// Image Drag and Drop
+// (function dragDrop() {
+
+  var dropbox = $('#dropbox')[0]
+  var state = $('#state')[0]
+
+  // Checks for FileReader
+
+  if(typeof window.FileReader === 'undefined') {
+    state.className = 'fail' ;
+  } else {
+    state.className = 'success';
+    // state.innerHTML = 'File API & FileReader available'
+  }
+
+  dropbox.ondragover = function() {
+    this.className = 'hover'; return false;
+  };
+  dropbox.ondragend = function () {
+    this.className = ''; return false;
+  };
+  dropbox.ondrop = function (e) {
+    this.className = 'dropped';
+    e.preventDefault();
+
+    var file = e.dataTransfer.files[0],
+        reader = new FileReader();
+    reader.onload = function (event) {
+      console.log(event.target);
+      dropbox.style.background = 'url('+ event.target.result + ') no-repeat center';
+    };
+
+    console.log(file);
+    reader.readAsDataURL(file);
+  }
+// })
 
 
 
