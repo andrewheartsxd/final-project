@@ -13,10 +13,7 @@ function Rack() {
   this.index = 0;
 }
 
-function addToRack(clothing) {
-
-
-  rack.index = 0;
+function addToRack(rack, clothing) {
   rack.item[rack.index] = clothing;
   rack.index++;
 }
@@ -64,23 +61,19 @@ $("#add-item").on("click", function() {
 
   var type = $("#type-selector option:selected").attr("value");
   var color = $("#color-selector option:selected").attr("value");
-
-  if(type === "--type--" || color === "--color--") {
+  var wholeString = $('#dropbox').css("background-image");
+  var source = wholeString.substring(4, wholeString.length - 1);
+  if(type === "type" || color === "color" || wholeString === "none") {
     $("#add-item").val("Pick properties");
   }
   else {
-    alert("running");
-    var wholeString = $('#dropbox').css("background-image");
-    var source = wholeString.substring(4, wholeString.length - 1);
-
     var clothing = new Clothing(type, color, source);
-    var userObject = localStorage.getItem("UserKey");
-    userObject = JSON.parse(userObject);
+    var userObject = JSON.parse(localStorage.getItem("UserKey"));
     if(clothing.type === clothingType[0]) {
-      userObject.racks[0].addToRack(clothing);
+      addToRack(userObject.racks[0], clothing);
     }
     else if (clothing.type === clothingType[1]) {
-      userObject.racks[1].addToRack(clothing);
+      addToRack(userObject.racks[1], clothing);
     }
     localStorage.setItem("UserKey",JSON.stringify(userObject));
   }
@@ -93,19 +86,19 @@ $("#add-item").on("mouseleave", function() {
 // ---------- CLOSET PAGE LOAD -----------
 // As soon as the DOM tree is created, will run this function. UserObject is retrived from memory and parsed - <img> tag assigned to top/bottom section with source.
 $(function() {
-  var userObject = localStorage.getItem("UserKey");
-  userObject = JSON.parse(userObject);
-  $.each(userObject.racks.item[0], function(index, value) {
-    $("#top-images").append("<img src='"+ getImgSource(index) + "'>");
+  var userObject = JSON.parse(localStorage.getItem("UserKey"));
+  $.each(userObject.racks[0].item, function(index, value) {
+    $("#top-images").append("<img class='picture' src='"+ getImgSource(value) + "'>");
   });
-  $.each(userObject.racks.item[1], function(index, value) {
-    $("#bottom-images").append("<img src='"+ getImgSource(index) + "'>");
+  $.each(userObject.racks[1].item, function(index, value) {
+    $("#bottom-images").append("<img class='picture' src='"+ getImgSource(value) + "'>");
   });
 });
 
 
 
 // --------- PICK LONGEST RACK ---------
+// Picks the largest rack.
 function pickLongestRack(user) {
   var dummyArray = new Array();
   $.each(user.racks, function(i, value) {
@@ -118,7 +111,7 @@ function pickLongestRack(user) {
 }
 
 //  ---------- PICK FIRST ITEM -----------
-// Picks the largest rack.
+// Randomly pick clothes item from largest array.
 function pickFirstItem(user) {
   var index = pickLongestRack(user);
   var randomIndex = Math.floor(Math.random() * user.racks[index].length);
@@ -165,6 +158,7 @@ function pickNextItem(user) {
     reader.onload = function (event) {
       console.log(event.target);
       dropbox.style.background = 'url('+ event.target.result + ') no-repeat center';
+      dropbox.style.backgroundSize = "250px 250px";
     };
 
     console.log(file);
