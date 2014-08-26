@@ -18,6 +18,16 @@
   display: block;
 }
 
+#dropbox.hover{
+  border: dotted 10px black;
+}
+
+#dropbox.dropped{
+  opacity: 1;
+  border: dotted 10px black;
+}
+}
+
 .selection-box{
   height: 300px;
   margin-top: 130px;
