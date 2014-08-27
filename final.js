@@ -13,15 +13,6 @@ function Rack() {
   this.index = 0;
 }
 
-function addToRack(rack, clothing) {
-  rack.item[rack.index] = clothing;
-  rack.index++;
-}
-
-function getImgSource(clothing) {
-  return clothing.picture;
-}
-
 // colors and type will be passed to the class Clothing in array form (clothingtype[0] for example). This makes it easier to add another color or type later.
 function Clothing(type, color, picture) {
   this.type = type;
@@ -29,13 +20,34 @@ function Clothing(type, color, picture) {
   this.picture = picture;
   this.picked = false;
 }
+// ---------- END ----------
+
+
+// --------- FUNCTIONS ----------
+// Had to be global. Methods/functions are not saved via localStorage.
+function addToRack(rack, clothing) {
+  rack.item[rack.index] = clothing;
+  rack.index++;
+}
+function getImgSource(clothing) {
+  return clothing.picture;
+}
+
+// Map looks at "array" and creates a new array "tempArray" based on the user defined "property". tempArray will hold an array of the clothing's "colors" - "red", "blue", etc or "types" - "top" "bottom". "propertyName" is the what the user is looking for "blue", "top", etc.
+function findIndexProp(array, property, propertyName) {
+  tempArray= array.map(function(x) {
+    return x.property;
+  })
+  return index = tempArray.indexOf(propertyName);
+}
+// ---------- END ----------
 
 
 // ---------- SETTINGS ----------
 // Declare colors and types within arrays so it will be easy to add things in the future.
 var clothingColors = ["black","white","grey","blue","yellow","red","green","beige"];
 var clothingType = ["top", "bottom"];
-
+// ---------- END ----------
 
 
 
@@ -53,6 +65,7 @@ $('#signUpButton').on("click", function() {
     window.location.href = 'closet.html';
   }
 });
+// ---------- END ----------
 
 
 // ---------- ADD ITEM BUTTON ---------
@@ -82,8 +95,10 @@ $("#add-item").on("click", function() {
 $("#add-item").on("mouseleave", function() {
   $("#add-item").val("add item");
 });
+// ---------- END ----------
 
-// ---------- CLOSET PAGE LOAD -----------
+
+// ---------- LOAD CLOSET -----------
 // As soon as the DOM tree is created, will run this function. UserObject is retrived from memory and parsed - <img> tag assigned to top/bottom section with source.
 $(function() {
   var userObject = JSON.parse(localStorage.getItem("UserKey"));
@@ -94,7 +109,15 @@ $(function() {
     $("#bottom-images").append("<img class='picture' src='"+ getImgSource(value) + "'>");
   });
 });
+// ---------- END ----------
 
+
+// ---------- GENERATE OUTFIT BUTTON -----------
+$("#nav-3, #generate").on("click", function() {
+  var userObject = JSON.parse(localStorage.getItem("UserKey"));
+  // somePickFunction(userObject);
+});
+// ---------- END ----------
 
 
 // --------- PICK LONGEST RACK ---------
@@ -110,6 +133,8 @@ function pickLongestRack(user) {
   var index = dummyArray.indexOf(maxLengthArray);
   return index;
 }
+// ---------- END ----------
+
 
 //  ---------- PICK FIRST ITEM -----------
 // Randomly pick clothes item from largest array.
@@ -120,55 +145,81 @@ function pickFirstItem(user) {
   var firstClothing = user.racks[index].item[randomIndex];
   localStorage.setItem("firstClothing", JSON.stringify(firstClothing));
 }
+// ---------- END ----------
+
 
 // ---------- PICK NEXT ITEM ----------
 function pickNextItem(user) {
   pickFirstItem(user);
   var firstClothing = JSON.parse(localStorage.getItem("firstClothing"));
-  rules(firstClothing);
+  rules(firstClothing, user);
 }
+// ---------- END ----------
 
-function rules(firstClothing) {
+
+// ---------- MATCH 2ND ITEM -----------
+function rules(firstClothing, user) {
   var firstType = firstClothing.type;
   var firstColor = firstClothing.color;
-
+  var tempArray = new Array(); /*Will copy a rack for so code doesn't change the user's rack*/
   switch(firstType) {
-    case "top":
-
+    case clothingType[0] : /*top*/
+      tempArray = user.racks[1].item; /*tempArray now holds all of the user's bottoms*/
       switch(firstColor) {
-        case "black"
+        case clothingColors[0] : /*black*/
+          tempArray.indexOf("black")
+          break;
+        case clothingColors[1] : /*white*/
+          break;
+        case clothingColors[2] : /*grey*/
+          break;
+        case clothingColors[3] : /*blue*/
+          break;
+        case clothingColors[4] : /*yellow*/
+          break;
+        case clothingColors[5] : /*red*/
+          break;
+        case clothingColors[6] : /*green*/
+          break;
+        case clothingColors[7] : /*beige*/
+          break;
       }
-
-    break;
-
-    case: "bottom"
-    break;
+      break;
+    case clothingType[1] : /*bottom*/
+      switch(firstColor) {
+        case clothingColors[0] : /*black*/
+          break;
+        case clothingColors[1] : /*white*/
+          break;
+        case clothingColors[2] : /*grey*/
+          break;
+        case clothingColors[3] : /*blue*/
+          break;
+        case clothingColors[4] : /*yellow*/
+          break;
+        case clothingColors[5] : /*red*/
+          break;
+        case clothingColors[6] : /*green*/
+          break;
+        case clothingColors[7] : /*beige*/
+          break;
+      }
+      break;
   }
-
-
-
-
-
-
 }
+// ---------- END ----------
 
 
-
-// Image Drag and Drop
-// (function dragDrop() {
-
+// ---------- DRAG/DROP ----------
   var dropbox = $('#dropbox')[0]
   var state = $('#state')[0]
-
   // Checks for FileReader
-
   if(typeof window.FileReader === 'undefined') {
     state.className = 'fail' ;
   } else {
     state.className = 'success';
     // state.innerHTML = 'File API & FileReader available'
   }
-
   dropbox.ondragover = function() {
     this.className = 'hover'; return false;
   };
@@ -178,7 +229,6 @@ function rules(firstClothing) {
   dropbox.ondrop = function (e) {
     this.className = 'dropped';
     e.preventDefault();
-
     var file = e.dataTransfer.files[0],
         reader = new FileReader();
     reader.onload = function (event) {
@@ -186,10 +236,13 @@ function rules(firstClothing) {
       dropbox.style.background = 'url('+ event.target.result + ') no-repeat center';
       dropbox.style.backgroundSize = "250px 250px";
     };
-
     console.log(file);
     reader.readAsDataURL(file);
   }
+// ---------- END ----------
+
+
+
 // })
 
 // // Category is either bottomRack
