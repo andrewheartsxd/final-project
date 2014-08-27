@@ -34,11 +34,14 @@ function getImgSource(clothing) {
 }
 
 // Map looks at "array" and creates a new array "tempArray" based on the user defined "property". tempArray will hold an array of the clothing's "colors" - "red", "blue", etc or "types" - "top" "bottom". "propertyName" is the what the user is looking for "blue", "top", etc.
-function findIndexProp(array, property, propertyName) {
-  tempArray= array.map(function(x) {
-    return x.property;
-  })
-  return index = tempArray.indexOf(propertyName);
+function findIndexProp(array, property, propertyValue) {
+  var includeIndex = new Array();
+  for(var i = 0; i < array.length; i++) {
+    if(array[i][property] === propertyValue) {
+      includeIndex.push(i);
+    }
+  }
+  return includeIndex;
 }
 // ---------- END ----------
 
@@ -164,10 +167,11 @@ function rules(firstClothing, user) {
   var tempArray = new Array(); /*Will copy a rack for so code doesn't change the user's rack*/
   switch(firstType) {
     case clothingType[0] : /*top*/
-      tempArray = user.racks[1].item; /*tempArray now holds all of the user's bottoms*/
+      userRack = user.racks[1].item; /*tempArray now holds all of the user's bottoms*/
       switch(firstColor) {
         case clothingColors[0] : /*black*/
-          tempArray.indexOf("black")
+          var includeIndex = findIndexProp(userRack, "color", "white");
+
           break;
         case clothingColors[1] : /*white*/
           break;
@@ -209,7 +213,11 @@ function rules(firstClothing, user) {
 }
 // ---------- END ----------
 
-
+function findIndex(array, prop, propValue) {
+  $.map(array, function(x) {
+    return x.prop === propValue ? array.indexOf(x) : null;
+  });
+}
 // ---------- DRAG/DROP ----------
   var dropbox = $('#dropbox')[0]
   var state = $('#state')[0]
