@@ -142,6 +142,26 @@ $(function() {
 });
 // ---------- END ----------
 
+// ---------- DELETE CLOTHING ----------
+
+$(".picture").on('click',function() {
+  alert($(this).attr('src'));
+  delObj = $(this).attr('src');
+
+  var userObject = JSON.parse(localStorage.getItem("UserKey"));
+
+  $.each(userObject.racks[0].item, function(index, value) {
+    if(userObject.racks[0].item[index].picture === delObj) {
+      userObject.racks[0].item.splice(index, 1);
+    }
+  });
+
+  localStorage.setItem("UserKey", JSON.stringify(userObject));
+});
+
+
+
+
 
 // ---------- GENERATE OUTFIT BUTTON -----------
 $("#nav-3, #generate").on("click", function() {
@@ -151,29 +171,12 @@ $("#nav-3, #generate").on("click", function() {
 // ---------- END ----------
 
 
-// --------- PICK LONGEST RACK ---------
-// Picks the largest rack.
-function pickLongestRack(user) {
-  var dummyArray = new Array();
-  $.each(user.racks, function(i, value) {
-    dummyArray[i] = user.racks[i].item.length;
-  });
-  var maxLengthArray = dummyArray.reduce(function(previous, current) {
-    return previous > current ? previous : current;
-  });
-  var index = dummyArray.indexOf(maxLengthArray);
-  return index;
-}
-// ---------- END ----------
-
-
 //  ---------- PICK FIRST ITEM -----------
 // Randomly pick clothes item from largest array.
 function pickFirstItem(user) {
-  var index = pickLongestRack(user);
-  var randomIndex = Math.floor(Math.random() * user.racks[index].item.length);
+  var randomIndex = Math.floor(Math.random() * user.racks[0].item.length);
 
-  var firstClothing = user.racks[index].item[randomIndex];
+  var firstClothing = user.racks[0].item[randomIndex];
   localStorage.setItem("firstClothing", JSON.stringify(firstClothing));
 }
 // ---------- END ----------
@@ -190,83 +193,41 @@ function pickNextItem(user) {
 
 // ---------- MATCH 2ND ITEM -----------
 function rules(firstClothing, user) {
-  var firstType = firstClothing.type;
   var firstColor = firstClothing.color;
   var tempArray = new Array(); /*Will copy a rack for so code doesn't change the user's rack*/
-  switch(firstType) {
-    case clothingType[0] : /*top*/
-      userRack = user.racks[1].item; /*tempArray now holds all of the user's bottoms*/
-      switch(firstColor) {
-        case clothingColors[0] : /*black*/
-          var legalColors = [clothingColors[1],clothingColors[2],clothingColors[3],clothingColors[4],clothingColors[5],clothingColors[6],clothingColors[7]];
-          getClothing(tempArray, userRack, "color", legalColors);
-          break;
-        case clothingColors[1] : /*white*/
-          var legalColors = [clothingColors[0],clothingColors[2],clothingColors[3],clothingColors[4],clothingColors[5],clothingColors[6],clothingColors[7]];
-          getClothing(tempArray, userRack, "color", legalColors);
-          break;
-        case clothingColors[2] : /*grey*/
-          var legalColors = [clothingColors[0],clothingColors[1],clothingColors[3],clothingColors[4],clothingColors[5],clothingColors[6],clothingColors[7]];
-          getClothing(tempArray, userRack, "color", legalColors);
-          break;
-        case clothingColors[3] : /*blue*/
-          var legalColors = [clothingColors[1],clothingColors[2],clothingColors[4],clothingColors[7]];
-          getClothing(tempArray, userRack, "color", legalColors);
-          break;
-        case clothingColors[4] : /*yellow*/
-          var legalColors = [clothingColors[1],clothingColors[2],clothingColors[3]];
-          getClothing(tempArray, userRack, "color", legalColors);
-          break;
-        case clothingColors[5] : /*red*/
-          var legalColors = [clothingColors[0],clothingColors[1],clothingColors[2],clothingColors[3],clothingColors[7]];
-          getClothing(tempArray, userRack, "color", legalColors);
-          break;
-        case clothingColors[6] : /*green*/
-          var legalColors = [clothingColors[1],clothingColors[2],clothingColors[3],clothingColors[4]];
-          getClothing(tempArray, userRack, "color", legalColors);
-          break;
-        case clothingColors[7] : /*beige*/
-          var legalColors = [clothingColors[1],clothingColors[2],clothingColors[3]];
-          getClothing(tempArray, userRack, "color", legalColors);
-          break;
-      }
+  userRack = user.racks[1].item; /*tempArray now holds all of the user's bottoms*/
+  switch(firstColor) {
+    case clothingColors[0] : /*black*/
+      var legalColors = [clothingColors[1],clothingColors[2],clothingColors[3],clothingColors[4],clothingColors[5],clothingColors[6],clothingColors[7]];
+      getClothing(tempArray, userRack, "color", legalColors);
       break;
-    case clothingType[1] : /*bottom*/
-    userRack = user.racks[0].item; /*tempArray now holds all of the user's tops*/
-      switch(firstColor) {
-        case clothingColors[0] : /*black*/
-          var legalColors = [clothingColors[1],clothingColors[2],clothingColors[5]];
-          getClothing(tempArray, userRack, "color", legalColors);
-          break;
-        case clothingColors[1] : /*white*/
-          var legalColors = [clothingColors[0],clothingColors[2],clothingColors[3],clothingColors[4],clothingColors[5],clothingColors[6],clothingColors[7]];
-          getClothing(tempArray, userRack, "color", legalColors);
-          break;
-        case clothingColors[2] : /*grey*/
-          var legalColors = [clothingColors[0],clothingColors[1],clothingColors[3],clothingColors[4],clothingColors[5],clothingColors[6],clothingColors[7]];
-          getClothing(tempArray, userRack, "color", legalColors);
-          break;
-        case clothingColors[3] : /*blue*/
-          var legalColors = [clothingColors[0],clothingColors[1],clothingColors[2],clothingColors[4],clothingColors[5],clothingColors[6],clothingColors[7]];
-          getClothing(tempArray, userRack, "color", legalColors);
-          break;
-        case clothingColors[4] : /*yellow*/
-          var legalColors = [clothingColors[0],clothingColors[1],clothingColors[2],clothingColors[3],clothingColors[6]];
-          getClothing(tempArray, userRack, "color", legalColors);
-          break;
-        case clothingColors[5] : /*red*/
-          var legalColors = [clothingColors[0],clothingColors[1],clothingColors[2]];
-          getClothing(tempArray, userRack, "color", legalColors);
-          break;
-        case clothingColors[6] : /*green*/
-          var legalColors = [clothingColors[0],clothingColors[1],clothingColors[2]];
-          getClothing(tempArray, userRack, "color", legalColors);
-          break;
-        case clothingColors[7] : /*beige*/
-          var legalColors = [clothingColors[0],clothingColors[1],clothingColors[5]];
-          getClothing(tempArray, userRack, "color", legalColors);
-          break;
-      }
+    case clothingColors[1] : /*white*/
+      var legalColors = [clothingColors[0],clothingColors[2],clothingColors[3],clothingColors[4],clothingColors[5],clothingColors[6],clothingColors[7]];
+      getClothing(tempArray, userRack, "color", legalColors);
+      break;
+    case clothingColors[2] : /*grey*/
+      var legalColors = [clothingColors[0],clothingColors[1],clothingColors[3],clothingColors[4],clothingColors[5],clothingColors[6],clothingColors[7]];
+      getClothing(tempArray, userRack, "color", legalColors);
+      break;
+    case clothingColors[3] : /*blue*/
+      var legalColors = [clothingColors[1],clothingColors[2],clothingColors[4],clothingColors[7]];
+      getClothing(tempArray, userRack, "color", legalColors);
+      break;
+    case clothingColors[4] : /*yellow*/
+      var legalColors = [clothingColors[1],clothingColors[2],clothingColors[3]];
+      getClothing(tempArray, userRack, "color", legalColors);
+      break;
+    case clothingColors[5] : /*red*/
+      var legalColors = [clothingColors[0],clothingColors[1],clothingColors[2],clothingColors[3],clothingColors[7]];
+      getClothing(tempArray, userRack, "color", legalColors);
+      break;
+    case clothingColors[6] : /*green*/
+      var legalColors = [clothingColors[1],clothingColors[2],clothingColors[3],clothingColors[4]];
+      getClothing(tempArray, userRack, "color", legalColors);
+      break;
+    case clothingColors[7] : /*beige*/
+      var legalColors = [clothingColors[1],clothingColors[2],clothingColors[3]];
+      getClothing(tempArray, userRack, "color", legalColors);
       break;
   }
 }
