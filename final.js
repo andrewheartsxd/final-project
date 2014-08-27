@@ -32,16 +32,44 @@ function addToRack(rack, clothing) {
 function getImgSource(clothing) {
   return clothing.picture;
 }
-
-// Map looks at "array" and creates a new array "tempArray" based on the user defined "property". tempArray will hold an array of the clothing's "colors" - "red", "blue", etc or "types" - "top" "bottom". "propertyName" is the what the user is looking for "blue", "top", etc.
 function findIndexProp(array, property, propertyValue) {
-  var includeIndex = new Array();
+  var includeIndexes = new Array();
   for(var i = 0; i < array.length; i++) {
     if(array[i][property] === propertyValue) {
-      includeIndex.push(i);
+      includeIndexes.push(i);
     }
   }
-  return includeIndex;
+  return includeIndexes;
+}
+function pushArray(arrayOut, fullRack, arrayIndex) {
+  $.each(fullRack, function(indexFullRack, valFullRack) {
+    $.each(arrayIndex, function(index, value) {
+      if(indexFullRack === value) {
+        arrayOut.push(valFullRack);
+      }
+    });
+  });
+}
+function getClothing(arrayOut, arraySource, property, propertyValues) {
+  $.each(propertyValues, function(i, val) {
+    var includeIndexes = findIndexProp(arraySource, property, val);
+    pushArray(arrayOut, arraySource, includeIndexes);
+  });
+    if(arrayOut.length > 0) {
+      var randomIndex = Math.floor(Math.random() * arrayOut.length);
+      var secondClothing = arrayOut[randomIndex];
+      localStorage.setItem("secondClothing", JSON.stringify(secondClothing));
+      var firstClothing = JSON.parse(localStorage.getItem("firstClothing"));
+      $("#match-top")[0].style.background = "url(" + firstClothing.picture + ") no-repeat center";
+      $("#match-top")[0].style.backgroundSize = "250px 250px";
+      $("#match-bottom")[0].style.background = "url(" + secondClothing.picture + ") no-repeat center";
+      $("#match-bottom")[0].style.backgroundSize = "250px 250px";
+    }
+    else {
+      alert("get more damn clothes you hobo");
+      $("#match-top")[0].style.background = "";
+      $("#match-bottom")[0].style.background = "";
+    }
 }
 // ---------- END ----------
 
@@ -118,7 +146,7 @@ $(function() {
 // ---------- GENERATE OUTFIT BUTTON -----------
 $("#nav-3, #generate").on("click", function() {
   var userObject = JSON.parse(localStorage.getItem("UserKey"));
-  // somePickFunction(userObject);
+  pickNextItem(userObject);
 });
 // ---------- END ----------
 
@@ -128,7 +156,7 @@ $("#nav-3, #generate").on("click", function() {
 function pickLongestRack(user) {
   var dummyArray = new Array();
   $.each(user.racks, function(i, value) {
-    dummyArray[i] = user.racks[i].length;
+    dummyArray[i] = user.racks[i].item.length;
   });
   var maxLengthArray = dummyArray.reduce(function(previous, current) {
     return previous > current ? previous : current;
@@ -143,7 +171,7 @@ function pickLongestRack(user) {
 // Randomly pick clothes item from largest array.
 function pickFirstItem(user) {
   var index = pickLongestRack(user);
-  var randomIndex = Math.floor(Math.random() * user.racks[index].length);
+  var randomIndex = Math.floor(Math.random() * user.racks[index].item.length);
 
   var firstClothing = user.racks[index].item[randomIndex];
   localStorage.setItem("firstClothing", JSON.stringify(firstClothing));
@@ -170,42 +198,73 @@ function rules(firstClothing, user) {
       userRack = user.racks[1].item; /*tempArray now holds all of the user's bottoms*/
       switch(firstColor) {
         case clothingColors[0] : /*black*/
-          var includeIndex = findIndexProp(userRack, "color", "white");
-
+          var legalColors = [clothingColors[1],clothingColors[2],clothingColors[3],clothingColors[4],clothingColors[5],clothingColors[6],clothingColors[7]];
+          getClothing(tempArray, userRack, "color", legalColors);
           break;
         case clothingColors[1] : /*white*/
+          var legalColors = [clothingColors[0],clothingColors[2],clothingColors[3],clothingColors[4],clothingColors[5],clothingColors[6],clothingColors[7]];
+          getClothing(tempArray, userRack, "color", legalColors);
           break;
         case clothingColors[2] : /*grey*/
+          var legalColors = [clothingColors[0],clothingColors[1],clothingColors[3],clothingColors[4],clothingColors[5],clothingColors[6],clothingColors[7]];
+          getClothing(tempArray, userRack, "color", legalColors);
           break;
         case clothingColors[3] : /*blue*/
+          var legalColors = [clothingColors[1],clothingColors[2],clothingColors[4],clothingColors[7]];
+          getClothing(tempArray, userRack, "color", legalColors);
           break;
         case clothingColors[4] : /*yellow*/
+          var legalColors = [clothingColors[1],clothingColors[2],clothingColors[3]];
+          getClothing(tempArray, userRack, "color", legalColors);
           break;
         case clothingColors[5] : /*red*/
+          var legalColors = [clothingColors[0],clothingColors[1],clothingColors[2],clothingColors[3],clothingColors[7]];
+          getClothing(tempArray, userRack, "color", legalColors);
           break;
         case clothingColors[6] : /*green*/
+          var legalColors = [clothingColors[1],clothingColors[2],clothingColors[3],clothingColors[4]];
+          getClothing(tempArray, userRack, "color", legalColors);
           break;
         case clothingColors[7] : /*beige*/
+          var legalColors = [clothingColors[1],clothingColors[2],clothingColors[3]];
+          getClothing(tempArray, userRack, "color", legalColors);
           break;
       }
       break;
     case clothingType[1] : /*bottom*/
+    userRack = user.racks[0].item; /*tempArray now holds all of the user's tops*/
       switch(firstColor) {
         case clothingColors[0] : /*black*/
+          var legalColors = [clothingColors[1],clothingColors[2],clothingColors[5]];
+          getClothing(tempArray, userRack, "color", legalColors);
           break;
         case clothingColors[1] : /*white*/
+          var legalColors = [clothingColors[0],clothingColors[2],clothingColors[3],clothingColors[4],clothingColors[5],clothingColors[6],clothingColors[7]];
+          getClothing(tempArray, userRack, "color", legalColors);
           break;
         case clothingColors[2] : /*grey*/
+          var legalColors = [clothingColors[0],clothingColors[1],clothingColors[3],clothingColors[4],clothingColors[5],clothingColors[6],clothingColors[7]];
+          getClothing(tempArray, userRack, "color", legalColors);
           break;
         case clothingColors[3] : /*blue*/
+          var legalColors = [clothingColors[0],clothingColors[1],clothingColors[2],clothingColors[4],clothingColors[5],clothingColors[6],clothingColors[7]];
+          getClothing(tempArray, userRack, "color", legalColors);
           break;
         case clothingColors[4] : /*yellow*/
+          var legalColors = [clothingColors[0],clothingColors[1],clothingColors[2],clothingColors[3],clothingColors[6]];
+          getClothing(tempArray, userRack, "color", legalColors);
           break;
         case clothingColors[5] : /*red*/
+          var legalColors = [clothingColors[0],clothingColors[1],clothingColors[2]];
+          getClothing(tempArray, userRack, "color", legalColors);
           break;
         case clothingColors[6] : /*green*/
+          var legalColors = [clothingColors[0],clothingColors[1],clothingColors[2]];
+          getClothing(tempArray, userRack, "color", legalColors);
           break;
         case clothingColors[7] : /*beige*/
+          var legalColors = [clothingColors[0],clothingColors[1],clothingColors[5]];
+          getClothing(tempArray, userRack, "color", legalColors);
           break;
       }
       break;
@@ -213,11 +272,7 @@ function rules(firstClothing, user) {
 }
 // ---------- END ----------
 
-function findIndex(array, prop, propValue) {
-  $.map(array, function(x) {
-    return x.prop === propValue ? array.indexOf(x) : null;
-  });
-}
+
 // ---------- DRAG/DROP ----------
   var dropbox = $('#dropbox')[0]
   var state = $('#state')[0]
