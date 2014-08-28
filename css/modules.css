@@ -1,19 +1,11 @@
-*:focus{
-  outline: 0;
+*{
+  outline: none;
 }
 
-html, body, .container{
-  height: 100%;
-}
-
-body > .container {
-  height: auto; min-height: 100%;
-}
-
-.background {
-  position: fixed;
-  z-index: -1;
-  width: 100%;
+body {
+  background-image: url(../pictures/splash.jpg);
+  background-attachment: fixed;
+  background-size: 100%
 }
 
 #title{
@@ -21,6 +13,56 @@ body > .container {
   font-family: 'Lobster', cursive;
   color: white;
   text-shadow: 0px 0px 10px rgba(0, 0, 0, 1);
+}
+
+#login-button{
+  text-align: center;
+  color: white;
+  opacity: 1;
+  border-radius: 5px;
+  border-style: none;
+  background-color: rgba(255,255,255,0.3);
+  width: 100px;
+  height: 50px;
+  margin-top: 8px;
+  font-family: 'Open Sans', sans-serif;
+}
+
+
+.login-inputs input{
+  /*display: block;*/
+  width: 214px;
+  height: 40px;
+  border-style: none;
+  border-bottom: 1px solid lightgrey;
+  background-color: white;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 18px;
+  padding: 0px 0px 5px 5px;
+  display: none;
+}
+
+#login-username{
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+}
+
+#login-password{
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+#login-username, #login-password{
+  display: none;
+  opacity: 0.5;
+}
+
+#login-username:hover, #login-password:hover{
+  opacity: 0.9;
+}
+
+#login-username:focus, #login-password:focus{
+  opacity: 0.9;
 }
 
 .content-info h1{
@@ -37,19 +79,6 @@ body > .container {
   font-size: 18px;
 }
 
-#login{
-  text-align: center;
-  color: white;
-  opacity: 1;
-  border-radius: 5px;
-  border-style: none;
-  background-color: rgba(255,255,255,0.3);
-  width: 100px;
-  height: 50px;
-  margin-top: 8px;
-  font-family: 'Open Sans', sans-serif;
-}
-
 .space{
   height: 15em;
 }
@@ -57,7 +86,7 @@ body > .container {
 .canvas{
   position: relative;
   margin: 0 auto;
-  margin-top:30px;
+  margin-top: 30px;
 }
 
 .inputs input{
@@ -87,6 +116,7 @@ body > .container {
 #pleasefill{
   color: white;
   margin: 0 auto;
+  margin-top: 20px;
   width: 300px;
   text-align: center;
 }
@@ -103,4 +133,22 @@ body > .container {
   font-size: 18px;
   border-style: none;
   opacity: 0.9;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 959px) {
+
+#login-button{
+  margin-left: 705px;
+}
+
+@media only screen and (max-width: 767px) {
+
+.login-inputs input{
+  width: 300px;
+}
+
+#login-button{
+  width: 300px;
+}
+
 }

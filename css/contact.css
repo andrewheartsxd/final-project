@@ -1,0 +1,23 @@
+.contact-info{
+  margin-top: 20px;
+  background-color: rgba(255,255,255,0.8);
+  border-radius: 5px;
+  font-family: 'Bree Serif', serif;
+}
+
+.contact-info span{
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.google{
+  margin-top: 20px;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 959px) {
+
+.contact-info{
+  font-size: 80%;
+}
+
+}
