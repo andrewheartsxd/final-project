@@ -68,4 +68,9 @@
   margin-left: 0;
   font-size: 23px;
 }
+
+#generate:hover{
+  font-size: 30px;
+}
+
 }

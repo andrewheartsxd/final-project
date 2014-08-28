@@ -268,6 +268,13 @@ function rules(firstClothing, user) {
 // ---------- END ----------
 
 
+// ----------- SIGN OUT CONFIRM --------------
+
+    // $("#confirm").click(function(){
+    //     alert("Where do you think you're going? Come back again soon!");
+    // });
+// ---------- END ----------_
+
 
 // })
 

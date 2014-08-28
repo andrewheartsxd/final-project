@@ -19,17 +19,17 @@
                         <a href="#"><img id="fblike" src="pictures/fblike.png"></a>
                     </div>
                     <p id="fbnumber">150k+</p>
-                    <ul id="nav-top">
-                            <a href="#"><li>account</li></a>
+                    <nav id="nav-top">
+                            <a href="index.html"><li id="confirm">sign out</li></a>
                             <a href="about.html"><li>about</li></a>
                             <a href="contact.html"><li>contact</li></a>
-                    </ul>
+                    </nav>
                 </header>
-                <ul id="nav-bottom" class="seven columns">
+                <nav id="nav-bottom" class="seven columns">
                     <a href="additem.html"><li id="nav-1" class="two columns">add item</li></a>
                     <a href="closet.html"><li id="nav-2" class="two columns">closet</li></a>
-                    <a href="#"><li id="nav-3" class="two columns">match up!</li></a>
-                </ul>
+                    <a href="matchup.html"><li id="nav-3" class="two columns">match up!</li></a>
+                </nav>
                 <div class="clear"></div>
                 <div class="five columns">&nbsp;</div>
                 <div class="matchbox six columns">
@@ -43,8 +43,14 @@
                 <div class="five columns">&nbsp;</div>
                 <input type="button" id="generate" value="re-match!">
         </main>
+        <br>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
         <script src="final.js"></script>
+        <script>
+            $("#confirm").click(function(){
+                alert("Where do you think you're going? Come back again soon!");
+            });
+        </script>
     </body>
 </html>
