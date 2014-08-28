@@ -9,16 +9,17 @@
         <link rel="stylesheet" type="text/css" href="css/state.css">
         <link rel="stylesheet" type="text/css" href="css/theme.css">
         <link href='http://fonts.googleapis.com/css?family=Lobster|Open+Sans' rel='stylesheet' type='text/css'>
-    </head>
     <body>
-        <img class="background" src="pictures/splash.jpg">
         <main class="container">
             <br>
             <div id="title" class="fourteen columns">InstaSwag</div>
-            <input id="login" class="two columns" type="button" value="Log in">
+            <input id="login-button" class="two columns" type="button" value="Log in">
+            <div class="login-inputs offset-by-twelve four columns">
+                <input id="login-username" type="text" placeholder="Username">
+                <input id="login-password" type="text" placeholder="Password">
+            </div>
             <div class="space">&nbsp;</div>
-            <div class="one columns">&nbsp;</div>
-            <div class="content-info seven columns">
+            <div class="content-info offset-by-one seven columns">
                 <h1 class="welcome">Welcome to InstaSwag.</h1>
                 <p class="description">No longer have difficulty choosing what to wear, what matches with what, or simply choosing something new. Watch as your closet matches for you something new everyday and suits your style.</p>
             </div>
@@ -36,5 +37,12 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
         <script src="final.js"></script>
+        <script>
+            $(document).ready(function(){
+                $('#login-button').click(function(){
+                    $('#login-username, #login-password').fadeIn("slow");
+                });
+            });
+        </script>
     </body>
 </html>

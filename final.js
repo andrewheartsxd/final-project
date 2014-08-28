@@ -108,7 +108,7 @@ $("#add-item").on("click", function() {
   var wholeString = $('#dropbox').css("background-image");
   var source = wholeString.substring(4, wholeString.length - 1);
   if(type === "type" || color === "color" || wholeString === "none") {
-    $("#add-item").val("Pick properties");
+    $("#add-item").val("pick properties");
   }
   else {
     var clothing = new Clothing(type, color, source);
