@@ -53,6 +53,14 @@
                     jQuery('#signUpButton').focus().click();
                 }
             });
+
+            $('.login-inputs').keypress(function(e) {
+                if(e.which == 13) {
+                    jQuery(this).blur();
+                    jQuery('#signInButton').focus().click();
+                }
+            });
+
         </script>
     </body>
 </html>
