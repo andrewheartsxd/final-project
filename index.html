@@ -14,27 +14,33 @@
             <br>
             <div id="title" class="fourteen columns">InstaSwag</div>
             <input id="login-button" class="two columns" type="button" value="Log in">
-            <div class="login-inputs offset-by-twelve four columns">
+            <form class="login-inputs offset-by-twelve four columns">
                 <input id="login-username" type="text" placeholder="Username">
+<<<<<<< HEAD
                 <input id="login-password" type="password" placeholder="Password">
                 <div id="log-in-feedback"></div>
             </div>
+=======
+                <input id="login-password" type="text" placeholder="Password">
+            </form>
+>>>>>>> 55a211ff8463e783d17c419934098fd2331f955b
             <div class="space">&nbsp;</div>
-            <div class="content-info offset-by-one seven columns">
+            <summary class="content-info offset-by-one seven columns">
                 <h1 class="welcome">Welcome to InstaSwag.</h1>
                 <p class="description">No longer have difficulty choosing what to wear, what matches with what, or simply choosing something new. Watch as your closet matches for you something new everyday and suits your style.</p>
-            </div>
+            </summary>
             <div class="canvas eight columns">
-                    <div class="inputs">
+                    <form class="inputs">
                         <input id="email" type="text" placeholder="Email">
                         <input id="username" type="text" placeholder="Username">
                         <input id="password" type="password" placeholder="Password">
                         <div id="pleasefill"></div>
-                    </div>
+                    </form>
                 <br>
                 <input type="button" id="signUpButton" class="signup" value="Sign up">
             </div>
         </main>
+        <br>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
         <script src="final.js"></script>
@@ -43,6 +49,13 @@
                 $('#login-button').click(function(){
                     $('#login-username, #login-password').fadeIn("slow");
                 });
+            });
+
+            $('.inputs').keypress(function(e) {
+                if(e.which == 13) {
+                    jQuery(this).blur();
+                    jQuery('#signUpButton').focus().click();
+                }
             });
         </script>
     </body>

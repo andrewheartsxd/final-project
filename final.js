@@ -162,8 +162,9 @@ $("#add-item").on("mouseleave", function() {
 // ---------- END ----------
 
 
-// ---------- LOAD CLOSET -----------
+// ---------- LOAD CLOSET ----------- (MOVED TO SEPARATE JS)
 // As soon as the DOM tree is created, will run this function. UserObject is retrived from memory and parsed - <img> tag assigned to top/bottom section with source.
+
 $(function() {
   var currentKey = JSON.parse(localStorage.getItem("currentKey"));
   if(currentKey != null) {
@@ -178,7 +179,23 @@ $(function() {
 });
 // ---------- END ----------
 
+
 // ---------- DELETE CLOTHING ----------
+// $(window).load(
+//   $(".picture").on('click',function() {
+//     alert($(this).attr('src'));
+//     delObj = $(this).attr('src');
+//   })
+// )
+
+//   var userObject = JSON.parse(localStorage.getItem("UserKey"));
+
+//   $.each(userObject.racks[0].item, function(index, value) {
+//     if(userObject.racks[0].item[index].picture === delObj) {
+//       userObject.racks[0].item.splice(index, 1);
+//     }
+//   });
+
 
 $(".picture").on('click',function() {
   alert($(this).attr('src'));
@@ -280,37 +297,46 @@ function rules(firstClothing, user) {
 // ---------- END ----------
 
 
-// ---------- DRAG/DROP ----------
-  var dropbox = $('#dropbox')[0]
-  var state = $('#state')[0]
-  // Checks for FileReader
-  if(typeof window.FileReader === 'undefined') {
-    state.className = 'fail' ;
-  } else {
-    state.className = 'success';
-    // state.innerHTML = 'File API & FileReader available'
-  }
-  dropbox.ondragover = function() {
-    this.className = 'hover'; return false;
-  };
-  dropbox.ondragend = function () {
-    this.className = ''; return false;
-  };
-  dropbox.ondrop = function (e) {
-    this.className = 'dropped';
-    e.preventDefault();
-    var file = e.dataTransfer.files[0],
-        reader = new FileReader();
-    reader.onload = function (event) {
-      console.log(event.target);
-      dropbox.style.background = 'url('+ event.target.result + ') no-repeat center';
-      dropbox.style.backgroundSize = "250px 250px";
-    };
-    console.log(file);
-    reader.readAsDataURL(file);
-  }
+// ---------- DRAG/DROP ---------- (MOVED TO SEPARATE JS)
+  // var dropbox = $('#dropbox')[0]
+  // var state = $('#state')[0]
+  // // Checks for FileReader
+  // if(typeof window.FileReader === 'undefined') {
+  //   alert("File API & FileReader unavailable.")
+  //   // state.className = 'fail' ;
+  // } else {
+  //   console.log("File API & FileReader available")
+  //   // state.className = 'success';
+  //   // state.innerHTML = 'File API & FileReader available'
+  // }
+  // dropbox.ondragover = function() {
+  //   this.className = 'hover'; return false;
+  // };
+  // dropbox.ondragend = function () {
+  //   this.className = ''; return false;
+  // };
+  // dropbox.ondrop = function (e) {
+  //   this.className = 'dropped';
+  //   e.preventDefault();
+  //   var file = e.dataTransfer.files[0],
+  //       reader = new FileReader();
+  //   reader.onload = function (event) {
+  //     console.log(event.target);
+  //     dropbox.style.background = 'url('+ event.target.result + ') no-repeat center';
+  //     dropbox.style.backgroundSize = "250px 250px";
+  //   };
+  //   console.log(file);
+  //   reader.readAsDataURL(file);
+  // }
 // ---------- END ----------
 
+
+// ----------- SIGN OUT CONFIRM --------------
+
+    // $("#confirm").click(function(){
+    //     alert("Where do you think you're going? Come back again soon!");
+    // });
+// ---------- END ----------_
 
 
 // })
