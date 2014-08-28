@@ -32,7 +32,6 @@ body {
   background-color: rgba(255,255,255,0.5);
 }
 
-
 .login-inputs input{
   /*display: block;*/
   width: 214px;
@@ -56,16 +55,34 @@ body {
   border-bottom-left-radius: 3px;
 }
 
+#signInButton{
+  text-align: center;
+  color: white;
+  opacity: 1;
+  border-radius: 3px;
+  border-style: none;
+  background-color: rgba(255,255,255,0.3);
+  width: 214px;
+  height: 50px;
+  margin-top: 8px;
+  font-family: 'Open Sans', sans-serif;
+  display: none;
+}
+
+#signInButton:hover{
+  background-color: rgba(255,255,255,0.5);
+}
+
 #login-username, #login-password{
   display: none;
   opacity: 0.5;
 }
 
-#login-username:hover, #login-password:hover{
+#login-username:hover, #login-password:hover, #signInButton{
   opacity: 0.9;
 }
 
-#login-username:focus, #login-password:focus{
+#login-username:focus, #login-password:focus, #signInButton{
   opacity: 0.9;
 }
 
@@ -150,15 +167,32 @@ body {
 #login-button{
   margin-left: 705px;
 }
+}
 
 @media only screen and (max-width: 767px) {
 
 .login-inputs input{
   width: 300px;
+  margin: 0 auto;
+  display: block;
 }
 
 #login-button{
   width: 300px;
 }
 
+#login-username, #login-password{
+  opacity: 0.9;
+}
+
+#signInButton{
+  width: 300px;
+  color: grey;
+  background-color: rgba(255,255,255,0.9);
+}
+
+#signInButton:hover{
+    background-color: rgba(255,255,255,0.9);
+
+}
 }

@@ -18,7 +18,7 @@
                 <input id="login-username" type="text" placeholder="Username">
                 <input id="login-password" type="password" placeholder="Password">
                 <div id="log-in-feedback"></div>
-            </div>
+                <input type="button" id="signInButton" value="Let's go!">
             </form>
             <div class="space">&nbsp;</div>
             <summary class="content-info offset-by-one seven columns">
@@ -43,7 +43,7 @@
         <script>
             $(document).ready(function(){
                 $('#login-button').click(function(){
-                    $('#login-username, #login-password').fadeIn("slow");
+                    $('#login-username, #login-password, #signInButton').fadeIn("slow");
                 });
             });
 
