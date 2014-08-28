@@ -1,0 +1,16 @@
+.about-box {
+  margin-top: 20px;
+  background-color: rgba(255,255,255,0.8);
+  border-radius: 5px;
+  font-family: 'Bree Serif', Serif;
+}
+
+.about-box span {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.about-box p {
+  margin-left: 20px;
+  margin-right: 20px;
+}

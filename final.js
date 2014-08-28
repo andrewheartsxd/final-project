@@ -176,12 +176,12 @@ $(function() {
 
 
 // ---------- DELETE CLOTHING ----------
-// $(window).load(
-//   $(".picture").on('click',function() {
-//     alert($(this).attr('src'));
-//     delObj = $(this).attr('src');
-//   })
-// )
+$(window).load(function () {
+  $(".picture").on('click',function() {
+    alert($(this).attr('src'));
+    delObj = $(this).attr('src');
+  })
+})
 
 //   var userObject = JSON.parse(localStorage.getItem("UserKey"));
 
@@ -205,7 +205,7 @@ $(".picture").on('click',function() {
     }
   });
 
-  localStorage.setItem("UserKey", JSON.stringify(userObject));
+  localStorage.setItem(currentKey, JSON.stringify(userObject));
 });
 
 
