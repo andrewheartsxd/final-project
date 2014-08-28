@@ -1,7 +1,8 @@
  // ---------- CLASS/OBJECT ----------
 // User holds two Racks. One for "top" and another for "bottom" The array makes it easy for us to add on another rack for another type of clothing if needed.
-function User(name){
+function User(name,pass){
   this.name = name;
+  this.pass = pass;
   this.racks = [new Rack(), new Rack()];
 }
 
@@ -78,7 +79,6 @@ function getClothing(arrayOut, arraySource, property, propertyValues) {
 // Declare colors and types within arrays so it will be easy to add things in the future.
 var clothingColors = ["black","white","grey","blue","yellow","red","green","beige"];
 var clothingType = ["top", "bottom"];
-var keyArrayIndex;
 // ---------- END ----------
 
 // ---------- LOG-IN ----------
@@ -86,11 +86,17 @@ $("#login-button").on("click", function() {
   if($("#login-username").val() != "") {
     userName = $("#login-username").val();
     if(searchLocalStorage(userName) === true) {
-      localStorage.setItem("currentKey", JSON.stringify(userName));
-      window.location.href = 'closet.html';
+      userObject = JSON.parse(localStorage.getItem(userName));
+      if(userObject.pass === $("#login-password").val()) {
+        localStorage.setItem("currentKey", JSON.stringify(userName));
+        window.location.href = 'closet.html';
+      }
+      else {
+        $("#log-in-feedback").text("Incorrect username/password.");
+      }
     }
     else {
-      $("#log-in-feedback").text("Username does not exist.");
+      $("#log-in-feedback").text("Incorrect username/password.");
     }
   }
 });
@@ -100,32 +106,21 @@ $("#login-button").on("click", function() {
 // Creates userObject on sign up button click. Will need to make similar function on log-in click. Will pass userObject to memory.
 $('#signUpButton').on("click", function() {
   var userName = $("#username").val();
+  var password = $("#password").val();
+  var email = $("#email").val();
   localStorage.setItem("currentKey", JSON.stringify(userName));
-  if(userName === "") {
-    $('#pleasefill').text("You do have to fill this stuff out, you know.")
+  if(searchLocalStorage(userName) === true) {
+    $('#pleasefill').text("Username is taken.");
   }
   else {
-    var userObject = new User(userName);
-    keyArray = JSON.parse(localStorage.getItem("keyArray"));
-    if(keyArray === null){
-      keyArray = [];
-      keyArrayIndex = 0;
-      keyArray.push(userName);
-      localStorage.setItem("keyArrayIndex", JSON.stringify(keyArrayIndex));
-      localStorage.setItem("keyArray", JSON.stringify(keyArray));
-      localStorage.setItem(keyArray[keyArrayIndex], JSON.stringify(userObject));
-      window.location.href = 'closet.html';
+    if(userName === "" || password === "" || email === "") {
+      $('#pleasefill').text("You do have to fill this stuff out, you know.")
     }
     else {
-      keyArray.push(userName);
-      keyArrayIndex = JSON.parse(localStorage.getItem("keyArrayIndex"));
-      keyArrayIndex++;
-      localStorage.setItem("keyArrayIndex", JSON.stringify(keyArrayIndex));
-      localStorage.setItem("keyArray", JSON.stringify(keyArray));
-      localStorage.setItem(keyArray[keyArrayIndex], JSON.stringify(userObject));
+      var userObject = new User(userName, $("#password").val());
+      localStorage.setItem(userName, JSON.stringify(userObject));
       window.location.href = 'closet.html';
     }
-
   }
 });
 // ---------- END ----------
@@ -162,7 +157,7 @@ $("#add-item").on("mouseleave", function() {
 // ---------- END ----------
 
 
-// ---------- LOAD CLOSET ----------- (MOVED TO SEPARATE JS)
+// ---------- LOAD CLOSET -----------
 // As soon as the DOM tree is created, will run this function. UserObject is retrived from memory and parsed - <img> tag assigned to top/bottom section with source.
 
 $(function() {
@@ -201,7 +196,8 @@ $(".picture").on('click',function() {
   alert($(this).attr('src'));
   delObj = $(this).attr('src');
 
-  var userObject = JSON.parse(localStorage.getItem("UserKey"));
+  var currentKey = JSON.parse(localStorage.getItem("currentKey"));
+  var userObject = JSON.parse(localStorage.getItem(currentKey));
 
   $.each(userObject.racks[0].item, function(index, value) {
     if(userObject.racks[0].item[index].picture === delObj) {
@@ -297,77 +293,9 @@ function rules(firstClothing, user) {
 // ---------- END ----------
 
 
-// ---------- DRAG/DROP ---------- (MOVED TO SEPARATE JS)
-  // var dropbox = $('#dropbox')[0]
-  // var state = $('#state')[0]
-  // // Checks for FileReader
-  // if(typeof window.FileReader === 'undefined') {
-  //   alert("File API & FileReader unavailable.")
-  //   // state.className = 'fail' ;
-  // } else {
-  //   console.log("File API & FileReader available")
-  //   // state.className = 'success';
-  //   // state.innerHTML = 'File API & FileReader available'
-  // }
-  // dropbox.ondragover = function() {
-  //   this.className = 'hover'; return false;
-  // };
-  // dropbox.ondragend = function () {
-  //   this.className = ''; return false;
-  // };
-  // dropbox.ondrop = function (e) {
-  //   this.className = 'dropped';
-  //   e.preventDefault();
-  //   var file = e.dataTransfer.files[0],
-  //       reader = new FileReader();
-  //   reader.onload = function (event) {
-  //     console.log(event.target);
-  //     dropbox.style.background = 'url('+ event.target.result + ') no-repeat center';
-  //     dropbox.style.backgroundSize = "250px 250px";
-  //   };
-  //   console.log(file);
-  //   reader.readAsDataURL(file);
-  // }
-// ---------- END ----------
-
-
 // ----------- SIGN OUT CONFIRM --------------
-
-    // $("#confirm").click(function(){
-    //     alert("Where do you think you're going? Come back again soon!");
-    // });
+    $("#confirm").click(function(){
+      localStorage.setItem("currentKey", null);
+      alert("Where do you think you're going? Come back again soon!");
+    });
 // ---------- END ----------_
-
-
-// })
-
-// // Category is either bottomRack
-// function pickClothes(color,category) {
-//   for(i = 0; i < bottomRack.length; i++){
-//     if(bottomRack.item.color === "white") {
-//       tempRack[i] = bottomRack[i];
-//     }
-//   }
-// }
-// // Unsure if to use User.rack.startItem or just startItem.
-// function match(startItem) {
-//   if(startItem.category === "top") { /* Ensures startItem is a top */
-//     switch(startItem.color) {
-//       case "blue":
-//         for(i = 0; i < bottomRack.length; i++){
-//           if(bottomRack.item.color === "white") {
-//             tempRack[i] = bottomRack[i];
-//           }
-//         }
-//       case "black":
-//         for(i = 0; i < bottomRack.length; i++){
-//           if(bottomRack.item.color === "white") {
-//             tempRack[i] = bottomRack[i];
-//     }
-//   }
-//   else {
-//     switch(startItem.color) {
-//       case blue:
-//     }
-//   }
-// }
