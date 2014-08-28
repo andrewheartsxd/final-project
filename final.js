@@ -131,24 +131,24 @@ $("#add-item").on("mouseleave", function() {
 
 // ---------- LOAD CLOSET ----------- (MOVED TO SEPARATE JS)
 // As soon as the DOM tree is created, will run this function. UserObject is retrived from memory and parsed - <img> tag assigned to top/bottom section with source.
-// $(function() {
-//   var userObject = JSON.parse(localStorage.getItem("UserKey"));
-//   $.each(userObject.racks[0].item, function(index, value) {
-//     $("#top-images").append("<img class='picture' src='"+ getImgSource(value) + "'>");
-//   });
-//   $.each(userObject.racks[1].item, function(index, value) {
-//     $("#bottom-images").append("<img class='picture' src='"+ getImgSource(value) + "'>");
-//   });
-// });
+$(function() {
+  var userObject = JSON.parse(localStorage.getItem("UserKey"));
+  $.each(userObject.racks[0].item, function(index, value) {
+    $("#top-images").append("<img class='picture' src='"+ getImgSource(value) + "'>");
+  });
+  $.each(userObject.racks[1].item, function(index, value) {
+    $("#bottom-images").append("<img class='picture' src='"+ getImgSource(value) + "'>");
+  });
+});
 // // ---------- END ----------
 
 // ---------- DELETE CLOTHING ----------
-// $(window).load(
-//   $(".picture").on('click',function() {
-//     alert($(this).attr('src'));
-//     delObj = $(this).attr('src');
-//   })
-// )
+$(window).load(function () {
+  $(".picture").on('click',function() {
+    alert($(this).attr('src'));
+    delObj = $(this).attr('src');
+  })
+})
 
 //   var userObject = JSON.parse(localStorage.getItem("UserKey"));
 
@@ -160,7 +160,7 @@ $("#add-item").on("mouseleave", function() {
 
 //   localStorage.setItem("UserKey", JSON.stringify(userObject));
 // });
-
+// ---------- END ----------
 
 
 // ---------- GENERATE OUTFIT BUTTON -----------
