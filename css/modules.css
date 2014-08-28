@@ -28,6 +28,10 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
+#login-button:hover{
+  background-color: rgba(255,255,255,0.5);
+}
+
 
 .login-inputs input{
   /*display: block;*/
@@ -120,7 +124,13 @@ body {
   width: 300px;
   text-align: center;
 }
-
+#log-in-feedback{
+  color: white;
+  margin: 0 auto;
+  margin-top: 20px;
+  width: 214px;
+  text-align: center;
+}
 .signup{
   display: block;
   margin: 0 auto;

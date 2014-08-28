@@ -1,7 +1,8 @@
  // ---------- CLASS/OBJECT ----------
 // User holds two Racks. One for "top" and another for "bottom" The array makes it easy for us to add on another rack for another type of clothing if needed.
-function User(name){
+function User(name,pass){
   this.name = name;
+  this.pass = pass;
   this.racks = [new Rack(), new Rack()];
 }
 
@@ -80,20 +81,46 @@ var clothingColors = ["black","white","grey","blue","yellow","red","green","beig
 var clothingType = ["top", "bottom"];
 // ---------- END ----------
 
-
+// ---------- LOG-IN ----------
+$("#login-button").on("click", function() {
+  if($("#login-username").val() != "") {
+    userName = $("#login-username").val();
+    if(searchLocalStorage(userName) === true) {
+      userObject = JSON.parse(localStorage.getItem(userName));
+      if(userObject.pass === $("#login-password").val()) {
+        localStorage.setItem("currentKey", JSON.stringify(userName));
+        window.location.href = 'closet.html';
+      }
+      else {
+        $("#log-in-feedback").text("Incorrect username/password.");
+      }
+    }
+    else {
+      $("#log-in-feedback").text("Incorrect username/password.");
+    }
+  }
+});
+// ---------- END ----------
 
 // ---------- SIGNUP BUTTON ----------
 // Creates userObject on sign up button click. Will need to make similar function on log-in click. Will pass userObject to memory.
 $('#signUpButton').on("click", function() {
-  var username = $("#username").val();
-
-  if(username === "") {
-    $('#pleasefill').text("You do have to fill this stuff out, you know.")
+  var userName = $("#username").val();
+  var password = $("#password").val();
+  var email = $("#email").val();
+  localStorage.setItem("currentKey", JSON.stringify(userName));
+  if(searchLocalStorage(userName) === true) {
+    $('#pleasefill').text("Username is taken.");
   }
   else {
-    var userObject = new User(username);
-    localStorage.setItem("UserKey", JSON.stringify(userObject));
-    window.location.href = 'closet.html';
+    if(userName === "" || password === "" || email === "") {
+      $('#pleasefill').text("You do have to fill this stuff out, you know.")
+    }
+    else {
+      var userObject = new User(userName, $("#password").val());
+      localStorage.setItem(userName, JSON.stringify(userObject));
+      window.location.href = 'closet.html';
+    }
   }
 });
 // ---------- END ----------
@@ -111,15 +138,16 @@ $("#add-item").on("click", function() {
     $("#add-item").val("pick properties");
   }
   else {
+    currentKey = JSON.parse(localStorage.getItem("currentKey"));
     var clothing = new Clothing(type, color, source);
-    var userObject = JSON.parse(localStorage.getItem("UserKey"));
+    var userObject = JSON.parse(localStorage.getItem(currentKey));
     if(clothing.type === clothingType[0]) {
       addToRack(userObject.racks[0], clothing);
     }
     else if (clothing.type === clothingType[1]) {
       addToRack(userObject.racks[1], clothing);
     }
-    localStorage.setItem("UserKey",JSON.stringify(userObject));
+    localStorage.setItem(currentKey,JSON.stringify(userObject));
   }
 });
 // Returns add-item button to default value on mouseoff.
@@ -129,18 +157,23 @@ $("#add-item").on("mouseleave", function() {
 // ---------- END ----------
 
 
-// ---------- LOAD CLOSET ----------- (MOVED TO SEPARATE JS)
+// ---------- LOAD CLOSET -----------
 // As soon as the DOM tree is created, will run this function. UserObject is retrived from memory and parsed - <img> tag assigned to top/bottom section with source.
+
 $(function() {
-  var userObject = JSON.parse(localStorage.getItem("UserKey"));
-  $.each(userObject.racks[0].item, function(index, value) {
-    $("#top-images").append("<img class='picture' src='"+ getImgSource(value) + "'>");
-  });
-  $.each(userObject.racks[1].item, function(index, value) {
-    $("#bottom-images").append("<img class='picture' src='"+ getImgSource(value) + "'>");
-  });
+  var currentKey = JSON.parse(localStorage.getItem("currentKey"));
+  if(currentKey != null) {
+    var userObject = JSON.parse(localStorage.getItem(currentKey));
+    $.each(userObject.racks[0].item, function(index, value) {
+      $("#top-images").append("<img class='picture' src='"+ getImgSource(value) + "'>");
+    });
+    $.each(userObject.racks[1].item, function(index, value) {
+      $("#bottom-images").append("<img class='picture' src='"+ getImgSource(value) + "'>");
+    });
+  }
 });
-// // ---------- END ----------
+// ---------- END ----------
+
 
 // ---------- DELETE CLOTHING ----------
 $(window).load(function () {
@@ -158,16 +191,42 @@ $(window).load(function () {
 //     }
 //   });
 
-//   localStorage.setItem("UserKey", JSON.stringify(userObject));
-// });
-// ---------- END ----------
+
+$(".picture").on('click',function() {
+  alert($(this).attr('src'));
+  delObj = $(this).attr('src');
+
+  var currentKey = JSON.parse(localStorage.getItem("currentKey"));
+  var userObject = JSON.parse(localStorage.getItem(currentKey));
+
+  $.each(userObject.racks[0].item, function(index, value) {
+    if(userObject.racks[0].item[index].picture === delObj) {
+      userObject.racks[0].item.splice(index, 1);
+    }
+  });
+
+  localStorage.setItem(currentKey, JSON.stringify(userObject));
+});
 
 
 // ---------- GENERATE OUTFIT BUTTON -----------
 $("#nav-3, #generate").on("click", function() {
-  var userObject = JSON.parse(localStorage.getItem("UserKey"));
+  currentKey = JSON.parse(localStorage.getItem("currentKey"));
+  var userObject = JSON.parse(localStorage.getItem(currentKey));
   pickNextItem(userObject);
 });
+// ---------- END ----------
+
+// ---------- SEARCH LOCAL STORAGE ---------
+function searchLocalStorage(item) {
+  for (var i = 0; i < localStorage.length; i++) {
+    var key = localStorage.key(i);
+    if(key === item) {
+      return true;
+    }
+  }
+  return false;
+}
 // ---------- END ----------
 
 
@@ -234,70 +293,9 @@ function rules(firstClothing, user) {
 // ---------- END ----------
 
 
-// ---------- DRAG/DROP ---------- (MOVED TO SEPARATE JS)
-  // var dropbox = $('#dropbox')[0]
-  // var state = $('#state')[0]
-  // // Checks for FileReader
-  // if(typeof window.FileReader === 'undefined') {
-  //   alert("File API & FileReader unavailable.")
-  //   // state.className = 'fail' ;
-  // } else {
-  //   console.log("File API & FileReader available")
-  //   // state.className = 'success';
-  //   // state.innerHTML = 'File API & FileReader available'
-  // }
-  // dropbox.ondragover = function() {
-  //   this.className = 'hover'; return false;
-  // };
-  // dropbox.ondragend = function () {
-  //   this.className = ''; return false;
-  // };
-  // dropbox.ondrop = function (e) {
-  //   this.className = 'dropped';
-  //   e.preventDefault();
-  //   var file = e.dataTransfer.files[0],
-  //       reader = new FileReader();
-  //   reader.onload = function (event) {
-  //     console.log(event.target);
-  //     dropbox.style.background = 'url('+ event.target.result + ') no-repeat center';
-  //     dropbox.style.backgroundSize = "250px 250px";
-  //   };
-  //   console.log(file);
-  //   reader.readAsDataURL(file);
-  // }
-// ---------- END ----------
-
-
-
-// })
-
-// // Category is either bottomRack
-// function pickClothes(color,category) {
-//   for(i = 0; i < bottomRack.length; i++){
-//     if(bottomRack.item.color === "white") {
-//       tempRack[i] = bottomRack[i];
-//     }
-//   }
-// }
-// // Unsure if to use User.rack.startItem or just startItem.
-// function match(startItem) {
-//   if(startItem.category === "top") { /* Ensures startItem is a top */
-//     switch(startItem.color) {
-//       case "blue":
-//         for(i = 0; i < bottomRack.length; i++){
-//           if(bottomRack.item.color === "white") {
-//             tempRack[i] = bottomRack[i];
-//           }
-//         }
-//       case "black":
-//         for(i = 0; i < bottomRack.length; i++){
-//           if(bottomRack.item.color === "white") {
-//             tempRack[i] = bottomRack[i];
-//     }
-//   }
-//   else {
-//     switch(startItem.color) {
-//       case blue:
-//     }
-//   }
-// }
+// ----------- SIGN OUT CONFIRM --------------
+    $("#confirm").click(function(){
+      localStorage.setItem("currentKey", null);
+      alert("Where do you think you're going? Come back again soon!");
+    });
+// ---------- END ----------_
