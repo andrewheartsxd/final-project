@@ -72,5 +72,10 @@
 #generate:hover{
   font-size: 30px;
 }
-
+#match-feedback {
+  color: white;
+  margin: 0 auto;
+  margin-top: 20px;
+  width: 214px;
+  text-align: center;
 }
