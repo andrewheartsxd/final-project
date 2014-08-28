@@ -82,7 +82,7 @@ var clothingType = ["top", "bottom"];
 // ---------- END ----------
 
 // ---------- LOG-IN ----------
-$("#login-button").on("click", function() {
+$("#signInButton").on("click", function() {
   if($("#login-username").val() != "") {
     userName = $("#login-username").val();
     if(searchLocalStorage(userName) === true) {
@@ -217,6 +217,7 @@ $("#nav-3, #generate").on("click", function() {
 });
 // ---------- END ----------
 
+
 // ---------- SEARCH LOCAL STORAGE ---------
 function searchLocalStorage(item) {
   for (var i = 0; i < localStorage.length; i++) {
@@ -292,6 +293,8 @@ function rules(firstClothing, user) {
 }
 // ---------- END ----------
 
+
+// ----------CHAOS MADE ------------
 
 // ----------- SIGN OUT CONFIRM --------------
     $("#confirm").click(function(){
