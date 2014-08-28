@@ -19,17 +19,17 @@
                     <a href="#"><img id="fblike" src="pictures/fblike.png"></a>
                 </div>
                 <p id="fbnumber">150k+</p>
-                <ul id="nav-top">
-                        <a href="#"><li>account</li></a>
+                <nav id="nav-top">
+                        <a href="index.html"><li id="confirm">sign out</li></a>
                         <a href="about.html"><li>about</li></a>
                         <a href="contact.html"><li>contact</li></a>
-                </ul>
+                </nav>
             </header>
-            <ul id="nav-bottom" class="seven columns">
+            <nav id="nav-bottom" class="seven columns">
                 <a href="additem.html"><li id="nav-1" class="two columns">add item</li></a>
                 <a href="closet.html"><li id="nav-2" class="two columns">closet</li></a>
                 <a href="matchup.html"><li id="nav-3" class="two columns">match up!</li></a>
-            </ul>
+            </nav>
             <div class="clear"></div>
             <div class="contact-info nine columns">
                 <h2><span>Where are we?</span></h2>
@@ -43,5 +43,13 @@
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d246630.2009791288!2d-148.16784379999999!3d-15.015065999999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x768d9035e86d3b9b%3A0xa2d186ec305c8542!2sTikehau%2C+French+Polynesia!5e0!3m2!1sen!2sus!4v1409182351229" width="400" height="300" frameborder="0" style="border:0"></iframe>
             </div>
         </main>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+        <script src="final.js"></script>
+        <script>
+            $("#confirm").click(function(){
+                alert("Where do you think you're going? Come back again soon!");
+            });
+        </script>
     </body>
 </html>
