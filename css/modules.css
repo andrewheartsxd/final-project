@@ -120,7 +120,13 @@ body {
   width: 300px;
   text-align: center;
 }
-
+#log-in-feedback{
+  color: white;
+  margin: 0 auto;
+  margin-top: 20px;
+  width: 214px;
+  text-align: center;
+}
 .signup{
   display: block;
   margin: 0 auto;
