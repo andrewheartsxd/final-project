@@ -32,13 +32,44 @@ function addToRack(rack, clothing) {
 function getImgSource(clothing) {
   return clothing.picture;
 }
-
-// Map looks at "array" and creates a new array "tempArray" based on the user defined "property". tempArray will hold an array of the clothing's "colors" - "red", "blue", etc or "types" - "top" "bottom". "propertyName" is the what the user is looking for "blue", "top", etc.
-function findIndexProp(array, property, propertyName) {
-  tempArray= array.map(function(x) {
-    return x.property;
-  })
-  return index = tempArray.indexOf(propertyName);
+function findIndexProp(array, property, propertyValue) {
+  var includeIndexes = new Array();
+  for(var i = 0; i < array.length; i++) {
+    if(array[i][property] === propertyValue) {
+      includeIndexes.push(i);
+    }
+  }
+  return includeIndexes;
+}
+function pushArray(arrayOut, fullRack, arrayIndex) {
+  $.each(fullRack, function(indexFullRack, valFullRack) {
+    $.each(arrayIndex, function(index, value) {
+      if(indexFullRack === value) {
+        arrayOut.push(valFullRack);
+      }
+    });
+  });
+}
+function getClothing(arrayOut, arraySource, property, propertyValues) {
+  $.each(propertyValues, function(i, val) {
+    var includeIndexes = findIndexProp(arraySource, property, val);
+    pushArray(arrayOut, arraySource, includeIndexes);
+  });
+    if(arrayOut.length > 0) {
+      var randomIndex = Math.floor(Math.random() * arrayOut.length);
+      var secondClothing = arrayOut[randomIndex];
+      localStorage.setItem("secondClothing", JSON.stringify(secondClothing));
+      var firstClothing = JSON.parse(localStorage.getItem("firstClothing"));
+      $("#match-top")[0].style.background = "url(" + firstClothing.picture + ") no-repeat center";
+      $("#match-top")[0].style.backgroundSize = "250px 250px";
+      $("#match-bottom")[0].style.background = "url(" + secondClothing.picture + ") no-repeat center";
+      $("#match-bottom")[0].style.backgroundSize = "250px 250px";
+    }
+    else {
+      alert("get more damn clothes you hobo");
+      $("#match-top")[0].style.background = "";
+      $("#match-bottom")[0].style.background = "";
+    }
 }
 // ---------- END ----------
 
@@ -98,51 +129,54 @@ $("#add-item").on("mouseleave", function() {
 // ---------- END ----------
 
 
-// ---------- LOAD CLOSET -----------
+// ---------- LOAD CLOSET ----------- (MOVED TO SEPARATE JS)
 // As soon as the DOM tree is created, will run this function. UserObject is retrived from memory and parsed - <img> tag assigned to top/bottom section with source.
-$(function() {
-  var userObject = JSON.parse(localStorage.getItem("UserKey"));
-  $.each(userObject.racks[0].item, function(index, value) {
-    $("#top-images").append("<img class='picture' src='"+ getImgSource(value) + "'>");
-  });
-  $.each(userObject.racks[1].item, function(index, value) {
-    $("#bottom-images").append("<img class='picture' src='"+ getImgSource(value) + "'>");
-  });
-});
-// ---------- END ----------
+// $(function() {
+//   var userObject = JSON.parse(localStorage.getItem("UserKey"));
+//   $.each(userObject.racks[0].item, function(index, value) {
+//     $("#top-images").append("<img class='picture' src='"+ getImgSource(value) + "'>");
+//   });
+//   $.each(userObject.racks[1].item, function(index, value) {
+//     $("#bottom-images").append("<img class='picture' src='"+ getImgSource(value) + "'>");
+//   });
+// });
+// // ---------- END ----------
+
+// ---------- DELETE CLOTHING ----------
+// $(window).load(
+//   $(".picture").on('click',function() {
+//     alert($(this).attr('src'));
+//     delObj = $(this).attr('src');
+//   })
+// )
+
+//   var userObject = JSON.parse(localStorage.getItem("UserKey"));
+
+//   $.each(userObject.racks[0].item, function(index, value) {
+//     if(userObject.racks[0].item[index].picture === delObj) {
+//       userObject.racks[0].item.splice(index, 1);
+//     }
+//   });
+
+//   localStorage.setItem("UserKey", JSON.stringify(userObject));
+// });
+
 
 
 // ---------- GENERATE OUTFIT BUTTON -----------
 $("#nav-3, #generate").on("click", function() {
   var userObject = JSON.parse(localStorage.getItem("UserKey"));
-  // somePickFunction(userObject);
+  pickNextItem(userObject);
 });
-// ---------- END ----------
-
-
-// --------- PICK LONGEST RACK ---------
-// Picks the largest rack.
-function pickLongestRack(user) {
-  var dummyArray = new Array();
-  $.each(user.racks, function(i, value) {
-    dummyArray[i] = user.racks[i].length;
-  });
-  var maxLengthArray = dummyArray.reduce(function(previous, current) {
-    return previous > current ? previous : current;
-  });
-  var index = dummyArray.indexOf(maxLengthArray);
-  return index;
-}
 // ---------- END ----------
 
 
 //  ---------- PICK FIRST ITEM -----------
 // Randomly pick clothes item from largest array.
 function pickFirstItem(user) {
-  var index = pickLongestRack(user);
-  var randomIndex = Math.floor(Math.random() * user.racks[index].length);
+  var randomIndex = Math.floor(Math.random() * user.racks[0].item.length);
 
-  var firstClothing = user.racks[index].item[randomIndex];
+  var firstClothing = user.racks[0].item[randomIndex];
   localStorage.setItem("firstClothing", JSON.stringify(firstClothing));
 }
 // ---------- END ----------
@@ -159,86 +193,78 @@ function pickNextItem(user) {
 
 // ---------- MATCH 2ND ITEM -----------
 function rules(firstClothing, user) {
-  var firstType = firstClothing.type;
   var firstColor = firstClothing.color;
   var tempArray = new Array(); /*Will copy a rack for so code doesn't change the user's rack*/
-  switch(firstType) {
-    case clothingType[0] : /*top*/
-      tempArray = user.racks[1].item; /*tempArray now holds all of the user's bottoms*/
-      switch(firstColor) {
-        case clothingColors[0] : /*black*/
-          tempArray.indexOf("black")
-          break;
-        case clothingColors[1] : /*white*/
-          break;
-        case clothingColors[2] : /*grey*/
-          break;
-        case clothingColors[3] : /*blue*/
-          break;
-        case clothingColors[4] : /*yellow*/
-          break;
-        case clothingColors[5] : /*red*/
-          break;
-        case clothingColors[6] : /*green*/
-          break;
-        case clothingColors[7] : /*beige*/
-          break;
-      }
+  userRack = user.racks[1].item; /*tempArray now holds all of the user's bottoms*/
+  switch(firstColor) {
+    case clothingColors[0] : /*black*/
+      var legalColors = [clothingColors[1],clothingColors[2],clothingColors[3],clothingColors[4],clothingColors[5],clothingColors[6],clothingColors[7]];
+      getClothing(tempArray, userRack, "color", legalColors);
       break;
-    case clothingType[1] : /*bottom*/
-      switch(firstColor) {
-        case clothingColors[0] : /*black*/
-          break;
-        case clothingColors[1] : /*white*/
-          break;
-        case clothingColors[2] : /*grey*/
-          break;
-        case clothingColors[3] : /*blue*/
-          break;
-        case clothingColors[4] : /*yellow*/
-          break;
-        case clothingColors[5] : /*red*/
-          break;
-        case clothingColors[6] : /*green*/
-          break;
-        case clothingColors[7] : /*beige*/
-          break;
-      }
+    case clothingColors[1] : /*white*/
+      var legalColors = [clothingColors[0],clothingColors[2],clothingColors[3],clothingColors[4],clothingColors[5],clothingColors[6],clothingColors[7]];
+      getClothing(tempArray, userRack, "color", legalColors);
+      break;
+    case clothingColors[2] : /*grey*/
+      var legalColors = [clothingColors[0],clothingColors[1],clothingColors[3],clothingColors[4],clothingColors[5],clothingColors[6],clothingColors[7]];
+      getClothing(tempArray, userRack, "color", legalColors);
+      break;
+    case clothingColors[3] : /*blue*/
+      var legalColors = [clothingColors[1],clothingColors[2],clothingColors[4],clothingColors[7]];
+      getClothing(tempArray, userRack, "color", legalColors);
+      break;
+    case clothingColors[4] : /*yellow*/
+      var legalColors = [clothingColors[1],clothingColors[2],clothingColors[3]];
+      getClothing(tempArray, userRack, "color", legalColors);
+      break;
+    case clothingColors[5] : /*red*/
+      var legalColors = [clothingColors[0],clothingColors[1],clothingColors[2],clothingColors[3],clothingColors[7]];
+      getClothing(tempArray, userRack, "color", legalColors);
+      break;
+    case clothingColors[6] : /*green*/
+      var legalColors = [clothingColors[1],clothingColors[2],clothingColors[3],clothingColors[4]];
+      getClothing(tempArray, userRack, "color", legalColors);
+      break;
+    case clothingColors[7] : /*beige*/
+      var legalColors = [clothingColors[1],clothingColors[2],clothingColors[3]];
+      getClothing(tempArray, userRack, "color", legalColors);
       break;
   }
 }
 // ---------- END ----------
 
 
-// ---------- DRAG/DROP ----------
-  var dropbox = $('#dropbox')[0]
-  var state = $('#state')[0]
-  // Checks for FileReader
-  if(typeof window.FileReader === 'undefined') {
-    state.className = 'fail' ;
-  } else {
-    state.className = 'success';
-    // state.innerHTML = 'File API & FileReader available'
-  }
-  dropbox.ondragover = function() {
-    this.className = 'hover'; return false;
-  };
-  dropbox.ondragend = function () {
-    this.className = ''; return false;
-  };
-  dropbox.ondrop = function (e) {
-    this.className = 'dropped';
-    e.preventDefault();
-    var file = e.dataTransfer.files[0],
-        reader = new FileReader();
-    reader.onload = function (event) {
-      console.log(event.target);
-      dropbox.style.background = 'url('+ event.target.result + ') no-repeat center';
-      dropbox.style.backgroundSize = "250px 250px";
-    };
-    console.log(file);
-    reader.readAsDataURL(file);
-  }
+// ---------- DRAG/DROP ---------- (MOVED TO SEPARATE JS)
+  // var dropbox = $('#dropbox')[0]
+  // var state = $('#state')[0]
+  // // Checks for FileReader
+  // if(typeof window.FileReader === 'undefined') {
+  //   alert("File API & FileReader unavailable.")
+  //   // state.className = 'fail' ;
+  // } else {
+  //   console.log("File API & FileReader available")
+  //   // state.className = 'success';
+  //   // state.innerHTML = 'File API & FileReader available'
+  // }
+  // dropbox.ondragover = function() {
+  //   this.className = 'hover'; return false;
+  // };
+  // dropbox.ondragend = function () {
+  //   this.className = ''; return false;
+  // };
+  // dropbox.ondrop = function (e) {
+  //   this.className = 'dropped';
+  //   e.preventDefault();
+  //   var file = e.dataTransfer.files[0],
+  //       reader = new FileReader();
+  //   reader.onload = function (event) {
+  //     console.log(event.target);
+  //     dropbox.style.background = 'url('+ event.target.result + ') no-repeat center';
+  //     dropbox.style.backgroundSize = "250px 250px";
+  //   };
+  //   console.log(file);
+  //   reader.readAsDataURL(file);
+  // }
 // ---------- END ----------
 
 
