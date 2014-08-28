@@ -295,10 +295,20 @@ function rules(firstClothing, user) {
 
 
 // ----------CHAOS MADE ------------
+$("#chaos").on("click", function() {
+  var tempArray = new Array();
+  var currentKey = JSON.parse(localStorage.getItem("currentKey"));
+  var userObject = JSON.parse(localStorage.getItem(currentKey));
+  pickNextItem(userObject);
+  userRack = userObject.racks[1].item;
+  getClothing(tempArray, userRack, "color", clothingColors);
+})
+// ---------- END ----------
+
 
 // ----------- SIGN OUT CONFIRM --------------
     $("#confirm").click(function(){
       localStorage.setItem("currentKey", null);
       alert("Where do you think you're going? Come back again soon!");
     });
-// ---------- END ----------_
+// ---------- END -----------
