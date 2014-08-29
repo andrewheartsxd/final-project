@@ -174,39 +174,37 @@ $(function() {
 });
 // ---------- END ----------
 
-
 // ---------- DELETE CLOTHING ----------
 $(window).load(function () {
   $(".picture").on('click',function() {
     alert($(this).attr('src'));
-    delObj = $(this).attr('src');
+    var delObj = $(this).attr('src');
+    var currentKey = JSON.parse(localStorage.getItem("currentKey"));
+    var userObject = JSON.parse(localStorage.getItem(currentKey));
+
+    for(i = 0; i < userObject.racks[0].item.length; i++) {
+      if(userObject.racks[0].item[i].picture === delObj) {
+        userObject.racks[0].item.splice(i, 1);
+      }
+    }
+    localStorage.setItem(currentKey, JSON.stringify(userObject));
+    location.reload();
   })
 })
 
-//   var userObject = JSON.parse(localStorage.getItem("UserKey"));
 
-//   $.each(userObject.racks[0].item, function(index, value) {
-//     if(userObject.racks[0].item[index].picture === delObj) {
-//       userObject.racks[0].item.splice(index, 1);
-//     }
-//   });
+    // $.each(userObject.racks[0].item, function(index, value) {
+    //   if(userObject.racks[0].item[index].picture === delObj) {
+    //     userObject.racks[0].item.splice(index, 1);
+    //     console.log(userObject)
+      // }
+    // })
+  // })})
+    // localStorage.setItem(currentKey, JSON.stringify(userObject));
 
-
-$(".picture").on('click',function() {
-  alert($(this).attr('src'));
-  delObj = $(this).attr('src');
-
-  var currentKey = JSON.parse(localStorage.getItem("currentKey"));
-  var userObject = JSON.parse(localStorage.getItem(currentKey));
-
-  $.each(userObject.racks[0].item, function(index, value) {
-    if(userObject.racks[0].item[index].picture === delObj) {
-      userObject.racks[0].item.splice(index, 1);
-    }
-  });
-
-  localStorage.setItem(currentKey, JSON.stringify(userObject));
-});
+  // })
+// })
+// ---------- END ----------
 
 
 // ---------- GENERATE OUTFIT BUTTON -----------
