@@ -1,4 +1,4 @@
- // ---------- CLASS/OBJECT ----------
+ // -------------------- CLASS/OBJECT --------------------
 // User holds two Racks. One for "top" and another for "bottom" The array makes it easy for us to add on another rack for another type of clothing if needed.
 function User(name,pass){
   this.name = name;
@@ -21,11 +21,20 @@ function Clothing(type, color, picture) {
   this.picture = picture;
   this.picked = false;
 }
-// ---------- END ----------
 
 
-// --------- FUNCTIONS ----------
-// Had to be global. Methods/functions are not saved via localStorage.
+// -------------------- SETTINGS --------------------
+var clothingColors = ["black","white","grey","blue","yellow","red","green","beige"];
+var clothingType = ["top", "bottom"];
+var insults = [
+"Get more clothes ya bum...",
+"Nothing in your closet looks good on you!",
+"Might I suggest purchasing more clothes from Universal Undies?",
+"Require additional clothing...",
+"You're beyond our help! And we're professionals!"];
+
+
+// ------------------- FUNCTIONS --------------------
 function addToRack(rack, clothing) {
   rack.item[rack.index] = clothing;
   rack.index++;
@@ -51,7 +60,82 @@ function pushArray(arrayOut, fullRack, arrayIndex) {
     });
   });
 }
-function getClothing(arrayOut, arraySource, property, propertyValues) {
+
+function filterArray(value, index, array1) {
+  return value.picture != delObj;
+}
+
+function searchLocalStorage(item) {
+  for (var i = 0; i < localStorage.length; i++) {
+    var key = localStorage.key(i);
+    if(key === item) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function match(user) {
+  pickFirstItem(user);
+  pickSecondItem(user);
+  changeMatchBackground(user);
+}
+
+function matchChaos(user) {
+  pickFirstItem(user);
+  userRack = user.racks[1].item;
+  applyRules(userRack, userRack, "color", clothingColors);
+  changeMatchBackground(user);
+}
+
+function pickFirstItem(user) {
+  var randomIndex = Math.floor(Math.random() * user.racks[0].item.length);
+  var firstClothing = user.racks[0].item[randomIndex];
+  localStorage.setItem("firstClothing", JSON.stringify(firstClothing));
+}
+
+function pickSecondItem(user) {
+  var firstClothing = JSON.parse(localStorage.getItem("firstClothing"));
+  var firstColor = firstClothing.color;
+  var tempArray = new Array(); /*Will copy a rack for so code doesn't change the user's rack*/
+  var userRack = user.racks[1].item; /*tempArray now holds all of the user's bottoms*/
+  switch(firstColor) {
+    case clothingColors[0] : /*black*/
+      var legalColors = [clothingColors[1],clothingColors[2],clothingColors[3],clothingColors[4],clothingColors[5],clothingColors[6],clothingColors[7]];
+      applyRules(tempArray, userRack, "color", legalColors);
+      break;
+    case clothingColors[1] : /*white*/
+      var legalColors = [clothingColors[0],clothingColors[2],clothingColors[3],clothingColors[4],clothingColors[5],clothingColors[6],clothingColors[7]];
+      applyRules(tempArray, userRack, "color", legalColors);
+      break;
+    case clothingColors[2] : /*grey*/
+      var legalColors = [clothingColors[0],clothingColors[1],clothingColors[3],clothingColors[4],clothingColors[5],clothingColors[6],clothingColors[7]];
+      applyRules(tempArray, userRack, "color", legalColors);
+      break;
+    case clothingColors[3] : /*blue*/
+      var legalColors = [clothingColors[1],clothingColors[2],clothingColors[4],clothingColors[7]];
+      applyRules(tempArray, userRack, "color", legalColors);
+      break;
+    case clothingColors[4] : /*yellow*/
+      var legalColors = [clothingColors[1],clothingColors[2],clothingColors[3]];
+      applyRules(tempArray, userRack, "color", legalColors);
+      break;
+    case clothingColors[5] : /*red*/
+      var legalColors = [clothingColors[0],clothingColors[1],clothingColors[2],clothingColors[3],clothingColors[7]];
+      applyRules(tempArray, userRack, "color", legalColors);
+      break;
+    case clothingColors[6] : /*green*/
+      var legalColors = [clothingColors[1],clothingColors[2],clothingColors[3],clothingColors[4]];
+      applyRules(tempArray, userRack, "color", legalColors);
+      break;
+    case clothingColors[7] : /*beige*/
+      var legalColors = [clothingColors[1],clothingColors[2],clothingColors[3]];
+      applyRules(tempArray, userRack, "color", legalColors);
+      break;
+  }
+}
+
+function applyRules(arrayOut, arraySource, property, propertyValues) {
   $.each(propertyValues, function(i, val) {
     var includeIndexes = findIndexProp(arraySource, property, val);
     pushArray(arrayOut, arraySource, includeIndexes);
@@ -60,26 +144,26 @@ function getClothing(arrayOut, arraySource, property, propertyValues) {
       var randomIndex = Math.floor(Math.random() * arrayOut.length);
       var secondClothing = arrayOut[randomIndex];
       localStorage.setItem("secondClothing", JSON.stringify(secondClothing));
-      var firstClothing = JSON.parse(localStorage.getItem("firstClothing"));
-      $("#match-top")[0].style.background = "url(" + firstClothing.picture + ") no-repeat center";
-      $("#match-top")[0].style.backgroundSize = "250px 250px";
-      $("#match-bottom")[0].style.background = "url(" + secondClothing.picture + ") no-repeat center";
-      $("#match-bottom")[0].style.backgroundSize = "250px 250px";
-    }
-    else {
-      $("#generate").text("Try again...and get more clothes!")
-      $("#match-top")[0].style.background = "";
-      $("#match-bottom")[0].style.background = "";
     }
 }
-// ---------- END ----------
+
+function changeMatchBackground(user) {
+  var firstClothing = JSON.parse(localStorage.getItem("firstClothing"));
+  var secondClothing = JSON.parse(localStorage.getItem("secondClothing"));
+  if(firstClothing != null || secondClothing != null) {
+    $("#match-top")[0].style.background = "url(" + firstClothing.picture + ") no-repeat center";
+    $("#match-top")[0].style.backgroundSize = "250px 250px";
+    $("#match-bottom")[0].style.background = "url(" + secondClothing.picture + ") no-repeat center";
+    $("#match-bottom")[0].style.backgroundSize = "250px 250px";
+  }
+  else {
+    $("#match-top")[0].style.background = "";
+    $("#match-bottom")[0].style.background = "";
+  }
+}
 
 
-// ---------- SETTINGS ----------
-// Declare colors and types within arrays so it will be easy to add things in the future.
-var clothingColors = ["black","white","grey","blue","yellow","red","green","beige"];
-var clothingType = ["top", "bottom"];
-// ---------- END ----------
+// ------------------- EVENTS -------------------
 
 // ---------- LOG-IN ----------
 $("#signInButton").on("click", function() {
@@ -100,10 +184,8 @@ $("#signInButton").on("click", function() {
     }
   }
 });
-// ---------- END ----------
 
 // ---------- SIGNUP BUTTON ----------
-// Creates userObject on sign up button click. Will need to make similar function on log-in click. Will pass userObject to memory.
 $('#signUpButton').on("click", function() {
   var userName = $("#username").val();
   var password = $("#password").val();
@@ -123,13 +205,9 @@ $('#signUpButton').on("click", function() {
     }
   }
 });
-// ---------- END ----------
-
 
 // ---------- ADD ITEM BUTTON ---------
-// Creates clothing Object based on user drop. Grabs userObject from memory - parse it - sort it based on type - stringify it - return it to memory. Checks if user selected properties. User gets feedback via add-item button.
 $("#add-item").on("click", function() {
-
   var type = $("#type-selector option:selected").attr("value");
   var color = $("#color-selector option:selected").attr("value");
   var wholeString = $('#dropbox').css("background-image");
@@ -153,7 +231,6 @@ $("#add-item").on("click", function() {
     userObject.racks[1].item = userObject.racks[1].item.filter(function(n) {
       return n != undefined;
     })
-
     localStorage.setItem(currentKey,JSON.stringify(userObject));
     $("#dropbox")[0].style.background = "";
     $("#type-selector").prop('selectedIndex',0);
@@ -165,12 +242,9 @@ $("#add-item").on("click", function() {
 $("#add-item").on("mouseleave", function() {
   $("#add-item").val("add item");
 });
-// ---------- END ----------
 
 
 // ---------- LOAD CLOSET -----------
-// As soon as the DOM tree is created, will run this function. UserObject is retrived from memory and parsed - <img> tag assigned to top/bottom section with source.
-
 $(function() {
   var currentKey = JSON.parse(localStorage.getItem("currentKey"));
   if(currentKey != null) {
@@ -185,14 +259,10 @@ $(function() {
 });
 // ---------- END ----------
 
-function filterArray(value, index, array1) {
-  return value.picture != delObj;
-}
 
 // ---------- DELETE CLOTHING ----------
 $(window).load(function () {
   $(".picture").on('click',function() {
-    // alert($(this).attr('src'));
     delObj = $(this).attr('src');
     var currentKey = JSON.parse(localStorage.getItem("currentKey"));
     var userObject = JSON.parse(localStorage.getItem(currentKey));
@@ -204,98 +274,20 @@ $(window).load(function () {
     location.reload();
   })
 })
-// ---------- END ----------
-
 
 // ---------- GENERATE OUTFIT BUTTON -----------
-$("#nav-3, #generate").on("click", function() {
+$("#generate").on("click", function() {
   currentKey = JSON.parse(localStorage.getItem("currentKey"));
   var userObject = JSON.parse(localStorage.getItem(currentKey));
-  if(userObject.racks[0].item.length > 0) {
-    pickNextItem(userObject);
+  if(userObject.racks[0].item.length > 0 && userObject.racks[1].item.length > 0) {
+    match(userObject);
   }
   else {
-    alert("get more clothes you bum");
+    var random = Math.floor(Math.random() * insults.length);
+    alert(insults[random]);
+    window.location.href = 'additem.html';
   }
 });
-// ---------- END ----------
-
-
-// ---------- SEARCH LOCAL STORAGE ---------
-function searchLocalStorage(item) {
-  for (var i = 0; i < localStorage.length; i++) {
-    var key = localStorage.key(i);
-    if(key === item) {
-      return true;
-    }
-  }
-  return false;
-}
-// ---------- END ----------
-
-
-//  ---------- PICK FIRST ITEM -----------
-// Randomly pick clothes item from largest array.
-function pickFirstItem(user) {
-  var randomIndex = Math.floor(Math.random() * user.racks[0].item.length);
-
-  var firstClothing = user.racks[0].item[randomIndex];
-  localStorage.setItem("firstClothing", JSON.stringify(firstClothing));
-}
-// ---------- END ----------
-
-
-// ---------- PICK NEXT ITEM ----------
-function pickNextItem(user) {
-  pickFirstItem(user);
-  var firstClothing = JSON.parse(localStorage.getItem("firstClothing"));
-  rules(firstClothing, user);
-}
-// ---------- END ----------
-
-
-// ---------- MATCH 2ND ITEM -----------
-function rules(firstClothing, user) {
-  var firstColor = firstClothing.color;
-  var tempArray = new Array(); /*Will copy a rack for so code doesn't change the user's rack*/
-  userRack = user.racks[1].item; /*tempArray now holds all of the user's bottoms*/
-  switch(firstColor) {
-    case clothingColors[0] : /*black*/
-      var legalColors = [clothingColors[1],clothingColors[2],clothingColors[3],clothingColors[4],clothingColors[5],clothingColors[6],clothingColors[7]];
-      getClothing(tempArray, userRack, "color", legalColors);
-      break;
-    case clothingColors[1] : /*white*/
-      var legalColors = [clothingColors[0],clothingColors[2],clothingColors[3],clothingColors[4],clothingColors[5],clothingColors[6],clothingColors[7]];
-      getClothing(tempArray, userRack, "color", legalColors);
-      break;
-    case clothingColors[2] : /*grey*/
-      var legalColors = [clothingColors[0],clothingColors[1],clothingColors[3],clothingColors[4],clothingColors[5],clothingColors[6],clothingColors[7]];
-      getClothing(tempArray, userRack, "color", legalColors);
-      break;
-    case clothingColors[3] : /*blue*/
-      var legalColors = [clothingColors[1],clothingColors[2],clothingColors[4],clothingColors[7]];
-      getClothing(tempArray, userRack, "color", legalColors);
-      break;
-    case clothingColors[4] : /*yellow*/
-      var legalColors = [clothingColors[1],clothingColors[2],clothingColors[3]];
-      getClothing(tempArray, userRack, "color", legalColors);
-      break;
-    case clothingColors[5] : /*red*/
-      var legalColors = [clothingColors[0],clothingColors[1],clothingColors[2],clothingColors[3],clothingColors[7]];
-      getClothing(tempArray, userRack, "color", legalColors);
-      break;
-    case clothingColors[6] : /*green*/
-      var legalColors = [clothingColors[1],clothingColors[2],clothingColors[3],clothingColors[4]];
-      getClothing(tempArray, userRack, "color", legalColors);
-      break;
-    case clothingColors[7] : /*beige*/
-      var legalColors = [clothingColors[1],clothingColors[2],clothingColors[3]];
-      getClothing(tempArray, userRack, "color", legalColors);
-      break;
-  }
-}
-// ---------- END ----------
-
 
 // ----------CHAOS MADE ------------
 $("#chaos").on("click", function() {
@@ -303,20 +295,17 @@ $("#chaos").on("click", function() {
   var currentKey = JSON.parse(localStorage.getItem("currentKey"));
   var userObject = JSON.parse(localStorage.getItem(currentKey));
   if(userObject.racks[0].item.length > 0 && userObject.racks[1].item.length > 0) {
-    pickFirstItem(userObject);
-    userRack = userObject.racks[1].item;
-    getClothing(userRack, userRack, "color", clothingColors);
+    matchChaos(userObject);
   }
   else {
-    $("#generate").text("Try again...and get more clothes!")
+    var random = Math.floor(Math.random() * insults.length);
+    alert(insults[random]);
+    window.location.href = 'additem.html';
   }
 })
-// ---------- END ----------
-
 
 // ----------- SIGN OUT CONFIRM --------------
     $("#confirm").click(function(){
       localStorage.setItem("currentKey", null);
       alert("Where do you think you're going? Come back again soon!");
     });
-// ---------- END -----------
