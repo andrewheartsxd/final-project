@@ -76,18 +76,16 @@ function searchLocalStorage(item) {
 }
 
 function match(user) {
-  localStorage.setItem("firstClothing", JSON.stringify(null));
-  localStorage.setItem("secondClothing", JSON.stringify(null));
   pickFirstItem(user);
   pickSecondItem(user);
+  changeMatchBackground(user);
 }
 
 function matchChaos(user) {
-  localStorage.setItem("firstClothing", JSON.stringify(null));
-  localStorage.setItem("secondClothing", JSON.stringify(null));
   pickFirstItem(user);
-  var userRack = user.racks[1].item;
+  userRack = user.racks[1].item;
   applyRules(userRack, userRack, "color", clothingColors);
+  changeMatchBackground(user);
 }
 
 function pickFirstItem(user) {
@@ -146,16 +144,22 @@ function applyRules(arrayOut, arraySource, property, propertyValues) {
       var randomIndex = Math.floor(Math.random() * arrayOut.length);
       var secondClothing = arrayOut[randomIndex];
       localStorage.setItem("secondClothing", JSON.stringify(secondClothing));
-      var firstClothing = JSON.parse(localStorage.getItem("firstClothing"));
-      $("#match-top")[0].style.background = "url(" + firstClothing.picture + ") no-repeat center";
-      $("#match-top")[0].style.backgroundSize = "250px 250px";
-      $("#match-bottom")[0].style.background = "url(" + secondClothing.picture + ") no-repeat center";
-      $("#match-bottom")[0].style.backgroundSize = "250px 250px";
     }
-    else {
-      $("#match-top")[0].style.background = "";
-      $("#match-bottom")[0].style.background = "";
-    }
+}
+
+function changeMatchBackground(user) {
+  var firstClothing = JSON.parse(localStorage.getItem("firstClothing"));
+  var secondClothing = JSON.parse(localStorage.getItem("secondClothing"));
+  if(firstClothing != null || secondClothing != null) {
+    $("#match-top")[0].style.background = "url(" + firstClothing.picture + ") no-repeat center";
+    $("#match-top")[0].style.backgroundSize = "250px 250px";
+    $("#match-bottom")[0].style.background = "url(" + secondClothing.picture + ") no-repeat center";
+    $("#match-bottom")[0].style.backgroundSize = "250px 250px";
+  }
+  else {
+    $("#match-top")[0].style.background = "";
+    $("#match-bottom")[0].style.background = "";
+  }
 }
 
 
@@ -291,9 +295,7 @@ $("#chaos").on("click", function() {
   var currentKey = JSON.parse(localStorage.getItem("currentKey"));
   var userObject = JSON.parse(localStorage.getItem(currentKey));
   if(userObject.racks[0].item.length > 0 && userObject.racks[1].item.length > 0) {
-    pickFirstItem(userObject);
-    userRack = userObject.racks[1].item;
-    applyRules(userRack, userRack, "color", clothingColors);
+    matchChaos(userObject);
   }
   else {
     var random = Math.floor(Math.random() * insults.length);
