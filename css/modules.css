@@ -61,20 +61,14 @@ body {
   opacity: 1;
   border-radius: 3px;
   border-style: none;
-  background-color: rgba(255,255,255,0.3);
+  background-color: #6699CC;
   width: 214px;
   height: 50px;
   margin-top: 8px;
   font-family: 'Open Sans', sans-serif;
-  display: none;
-}
-
-#signInButton:hover{
-  background-color: rgba(255,255,255,0.5);
 }
 
 #login-username, #login-password{
-  display: none;
   opacity: 0.5;
 }
 
@@ -140,9 +134,11 @@ body {
   margin-top: 20px;
   width: 300px;
   text-align: center;
+  text-shadow: 0px 0px 5px rgba(0, 0, 0, 1);
 }
 #log-in-feedback{
   color: white;
+  text-shadow: 0px 0px 5px rgba(0, 0, 0, 1);
   margin: 0 auto;
   margin-top: 20px;
   width: 214px;
@@ -172,13 +168,12 @@ body {
 @media only screen and (max-width: 767px) {
 
 .login-inputs input{
-  width: 300px;
   margin: 0 auto;
-  display: block;
+  width: 100%;
 }
 
 #login-button{
-  width: 300px;
+  width: 100%;
 }
 
 #login-username, #login-password{
@@ -186,13 +181,11 @@ body {
 }
 
 #signInButton{
-  width: 300px;
-  color: grey;
-  background-color: rgba(255,255,255,0.9);
+  color: white;
+  width: 100%;
 }
 
 #signInButton:hover{
-    background-color: rgba(255,255,255,0.9);
-
+  background-color: rgba(255,255,255,0.9);
 }
 }
