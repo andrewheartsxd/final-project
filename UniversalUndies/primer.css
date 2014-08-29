@@ -1,0 +1,72 @@
+*{
+  font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+}
+
+.logo{
+  position: fixed;
+  z-index: 2;
+  margin-left: 5%;
+}
+
+.shipping{
+  color: white;
+  margin-left: 18%;
+  position: fixed;
+  z-index: 2;
+  margin-top: 5px;
+}
+
+.fblike{
+  position: fixed;
+  margin-left: 18%;
+  margin-top: 35px;
+  width: 4%;
+  height: 3.5%;
+  z-index: 2;
+  opacity: 0.8;
+}
+
+.fblike:hover{
+  opacity: 1;
+}
+
+.subtitle{
+  text-align: center;
+}
+
+header{
+  position: fixed;
+  background-color: black;
+  padding-top: 3px;
+  margin: 0 auto;
+  width: 100%;
+  text-align: right;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  z-index: 1;
+}
+
+
+.nav-bar li{
+  display: inline;
+  font-size: 18px;
+  color: white;
+  padding-right: 30px;
+}
+
+.nav-bar li a{
+  text-decoration: none;
+  color: white;
+}
+
+.nav-bar li a:hover{
+  text-decoration: none;
+  color: grey;
+}
+
+#main-image{
+  opacity: 0.8;
+  width: 400px;
+  height: 400px;
+  z-index: -1;
+}
