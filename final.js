@@ -140,11 +140,14 @@ function applyRules(arrayOut, arraySource, property, propertyValues) {
     var includeIndexes = findIndexProp(arraySource, property, val);
     pushArray(arrayOut, arraySource, includeIndexes);
   });
-    if(arrayOut.length > 0) {
-      var randomIndex = Math.floor(Math.random() * arrayOut.length);
-      var secondClothing = arrayOut[randomIndex];
-      localStorage.setItem("secondClothing", JSON.stringify(secondClothing));
-    }
+  if(arrayOut.length > 0) {
+    var randomIndex = Math.floor(Math.random() * arrayOut.length);
+    var secondClothing = arrayOut[randomIndex];
+    localStorage.setItem("secondClothing", JSON.stringify(secondClothing));
+  }
+  else{
+    window.location.href = 'matchup.html';
+  }
 }
 
 function changeMatchBackground(user) {
@@ -289,6 +292,7 @@ $("#generate").on("click", function() {
   }
 });
 
+
 // ----------CHAOS MADE ------------
 $("#chaos").on("click", function() {
   var tempArray = new Array();
@@ -304,8 +308,8 @@ $("#chaos").on("click", function() {
   }
 })
 
+
 // ----------- SIGN OUT CONFIRM --------------
     $("#confirm").click(function(){
       localStorage.setItem("currentKey", null);
-      alert("Where do you think you're going? Come back again soon!");
     });
