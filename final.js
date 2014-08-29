@@ -307,4 +307,3 @@ $("#chaos").on("click", function() {
       localStorage.setItem("currentKey", null);
       alert("Where do you think you're going? Come back again soon!");
     });
-// ---------- END -----------
