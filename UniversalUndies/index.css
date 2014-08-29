@@ -1,0 +1,148 @@
+.background{
+  position: fixed;
+  z-index: -2;
+  opacity: 0.3;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  margin: auto;
+  display: block;
+}
+
+
+.info{
+  border-radius: 20px;
+  margin-left: 10%;
+  padding: 10px 10px 10px 10px;
+
+}
+
+.size-buttons{
+  padding-left: 0px;
+}
+
+.size-buttons img{
+  width: 18%;
+}
+
+#quantityInput{
+  font-size: 20px;
+  width: 25px;
+  height: 25px;
+}
+
+
+#up{
+  width: 25px;
+  height: 25px;
+}
+
+#down{
+  width: 25px;
+  height: 25px;
+}
+
+#add-cart{
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+  color: black;
+  background-color: #CCFFFF;
+}
+
+#checkout{
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+  color: black;
+  background-color: #FFFFCC;
+}
+
+#checkout-item-title, #checkout-quantity-title, #checkout-price-title, #checkout-total-title{
+  text-decoration: underline;
+}
+
+#checkout-title{
+  text-align: center;
+}
+
+.checkout-item-column{
+  text-align: center;
+}
+
+.checkout-item-title{
+  font-size: 20px;
+}
+
+.checkout-quantity-column{
+  text-align: center;
+}
+
+.checkout-quantity-title{
+  font-size: 20px;
+}
+
+.checkout-price-column{
+  text-align: center;
+}
+
+.checkout-price-title{
+  font-size: 20px;
+}
+
+.checkout-total-column{
+  text-align: center;
+}
+
+.checkout-total-title{
+  font-size: 20px;
+}
+
+.addon-titles{
+  font-size: 20px;
+}
+.checkout-remove{
+  text-align: center;
+}
+
+.remove{
+  font-size: 20px;
+}
+.addon-values{
+  text-align: right;
+  font-size: 20px;
+}
+
+.address-title{
+  text-align: center;
+  font-size: 30px;
+}
+
+#submit-shipping{
+  margin-left: 83%;
+  border-radius: 8px;
+  color: black;
+  background-color: white;
+}
+
+.payment-title{
+  text-align: right;
+  font-size: 30px;
+}
+
+.payment-method{
+  text-align: right;
+  text-decoration: underline;
+}
+
+.confirmation{
+  text-align: center;
+}
+
+.confirmation-title{
+  font-size: 30px;
+}
+
+.thank-you{
+  font-size: 20px;
+  text-align: center;
+}

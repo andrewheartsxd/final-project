@@ -192,7 +192,7 @@ function filterArray(value, index, array1) {
 // ---------- DELETE CLOTHING ----------
 $(window).load(function () {
   $(".picture").on('click',function() {
-    alert($(this).attr('src'));
+    // alert($(this).attr('src'));
     delObj = $(this).attr('src');
     var currentKey = JSON.parse(localStorage.getItem("currentKey"));
     var userObject = JSON.parse(localStorage.getItem(currentKey));
