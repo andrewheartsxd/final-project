@@ -67,7 +67,7 @@ function getClothing(arrayOut, arraySource, property, propertyValues) {
       $("#match-bottom")[0].style.backgroundSize = "250px 250px";
     }
     else {
-      alert("get more damn clothes you hobo");
+      $("#generate").text("Try again...and get more clothes!")
       $("#match-top")[0].style.background = "";
       $("#match-bottom")[0].style.background = "";
     }
@@ -148,6 +148,10 @@ $("#add-item").on("click", function() {
       addToRack(userObject.racks[1], clothing);
     }
     localStorage.setItem(currentKey,JSON.stringify(userObject));
+    $("#dropbox")[0].style.background = "";
+    $("#type-selector").prop('selectedIndex',0);
+    $("#color-selector").prop('selectedIndex',0);
+    $("#add-item").val("Item Added");
   }
 });
 // Returns add-item button to default value on mouseoff.
@@ -213,7 +217,12 @@ $(".picture").on('click',function() {
 $("#nav-3, #generate").on("click", function() {
   currentKey = JSON.parse(localStorage.getItem("currentKey"));
   var userObject = JSON.parse(localStorage.getItem(currentKey));
-  pickNextItem(userObject);
+  if(userObject.racks[0].item.length > 0) {
+    pickNextItem(userObject);
+  }
+  else {
+    alert("get more clothes you bum");
+  }
 });
 // ---------- END ----------
 
@@ -299,9 +308,14 @@ $("#chaos").on("click", function() {
   var tempArray = new Array();
   var currentKey = JSON.parse(localStorage.getItem("currentKey"));
   var userObject = JSON.parse(localStorage.getItem(currentKey));
-  pickNextItem(userObject);
-  userRack = userObject.racks[1].item;
-  getClothing(tempArray, userRack, "color", clothingColors);
+  if(userObject.racks[0].item.length > 0 && userObject.racks[1].item.length > 0) {
+    pickFirstItem(userObject);
+    userRack = userObject.racks[1].item;
+    getClothing(userRack, userRack, "color", clothingColors);
+  }
+  else {
+    $("#generate").text("Try again...and get more clothes!")
+  }
 })
 // ---------- END ----------
 
