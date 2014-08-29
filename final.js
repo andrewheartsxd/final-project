@@ -182,16 +182,23 @@ $(window).load(function () {
     var currentKey = JSON.parse(localStorage.getItem("currentKey"));
     var userObject = JSON.parse(localStorage.getItem(currentKey));
 
+    //checks tops for matching picture data URL and deletes out of array if match found
     for(i = 0; i < userObject.racks[0].item.length; i++) {
       if(userObject.racks[0].item[i].picture === delObj) {
         userObject.racks[0].item.splice(i, 1);
       }
     }
+    //checks bottoms for matching picture data URL and deletes out of array if match found
+    for(i = 0; i < userObject.racks[1].item.length; i++) {
+      if(userObject.racks[1].item[i].picture === delObj) {
+        userObject.racks[1].item.splice(i, 1);
+      }
+    }
+
     localStorage.setItem(currentKey, JSON.stringify(userObject));
     location.reload();
   })
 })
-
 
     // $.each(userObject.racks[0].item, function(index, value) {
     //   if(userObject.racks[0].item[index].picture === delObj) {
