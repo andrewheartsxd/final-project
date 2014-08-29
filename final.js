@@ -147,6 +147,13 @@ $("#add-item").on("click", function() {
     else if (clothing.type === clothingType[1]) {
       addToRack(userObject.racks[1], clothing);
     }
+    userObject.racks[0].item = userObject.racks[0].item.filter(function(n) {
+      return n != undefined;
+    })
+    userObject.racks[1].item = userObject.racks[1].item.filter(function(n) {
+      return n != undefined;
+    })
+
     localStorage.setItem(currentKey,JSON.stringify(userObject));
     $("#dropbox")[0].style.background = "";
     $("#type-selector").prop('selectedIndex',0);
@@ -178,43 +185,25 @@ $(function() {
 });
 // ---------- END ----------
 
+function filterArray(value, index, array1) {
+  return value.picture != delObj;
+}
+
 // ---------- DELETE CLOTHING ----------
 $(window).load(function () {
   $(".picture").on('click',function() {
     alert($(this).attr('src'));
-    var delObj = $(this).attr('src');
+    delObj = $(this).attr('src');
     var currentKey = JSON.parse(localStorage.getItem("currentKey"));
     var userObject = JSON.parse(localStorage.getItem(currentKey));
 
-    //checks tops for matching picture data URL and deletes out of array if match found
-    for(i = 0; i < userObject.racks[0].item.length; i++) {
-      if(userObject.racks[0].item[i].picture === delObj) {
-        userObject.racks[0].item.splice(i, 1);
-      }
-    }
-    //checks bottoms for matching picture data URL and deletes out of array if match found
-    for(i = 0; i < userObject.racks[1].item.length; i++) {
-      if(userObject.racks[1].item[i].picture === delObj) {
-        userObject.racks[1].item.splice(i, 1);
-      }
-    }
+    userObject.racks[0].item = userObject.racks[0].item.filter(filterArray);
+    userObject.racks[1].item = userObject.racks[1].item.filter(filterArray);
 
     localStorage.setItem(currentKey, JSON.stringify(userObject));
     location.reload();
   })
 })
-
-    // $.each(userObject.racks[0].item, function(index, value) {
-    //   if(userObject.racks[0].item[index].picture === delObj) {
-    //     userObject.racks[0].item.splice(index, 1);
-    //     console.log(userObject)
-      // }
-    // })
-  // })})
-    // localStorage.setItem(currentKey, JSON.stringify(userObject));
-
-  // })
-// })
 // ---------- END ----------
 
 
