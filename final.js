@@ -67,7 +67,7 @@ function getClothing(arrayOut, arraySource, property, propertyValues) {
       $("#match-bottom")[0].style.backgroundSize = "250px 250px";
     }
     else {
-      alert("get more damn clothes you hobo");
+      $("#generate").text("Try again...and get more clothes!")
       $("#match-top")[0].style.background = "";
       $("#match-bottom")[0].style.background = "";
     }
@@ -148,6 +148,10 @@ $("#add-item").on("click", function() {
       addToRack(userObject.racks[1], clothing);
     }
     localStorage.setItem(currentKey,JSON.stringify(userObject));
+    $("#dropbox")[0].style.background = "";
+    $("#type-selector").prop('selectedIndex',0);
+    $("#color-selector").prop('selectedIndex',0);
+    $("#add-item").val("Item Added");
   }
 });
 // Returns add-item button to default value on mouseoff.
@@ -174,46 +178,49 @@ $(function() {
 });
 // ---------- END ----------
 
-
 // ---------- DELETE CLOTHING ----------
 $(window).load(function () {
   $(".picture").on('click',function() {
     alert($(this).attr('src'));
-    delObj = $(this).attr('src');
+    var delObj = $(this).attr('src');
+    var currentKey = JSON.parse(localStorage.getItem("currentKey"));
+    var userObject = JSON.parse(localStorage.getItem(currentKey));
+
+    for(i = 0; i < userObject.racks[0].item.length; i++) {
+      if(userObject.racks[0].item[i].picture === delObj) {
+        userObject.racks[0].item.splice(i, 1);
+      }
+    }
+    localStorage.setItem(currentKey, JSON.stringify(userObject));
+    location.reload();
   })
 })
 
-//   var userObject = JSON.parse(localStorage.getItem("UserKey"));
 
-//   $.each(userObject.racks[0].item, function(index, value) {
-//     if(userObject.racks[0].item[index].picture === delObj) {
-//       userObject.racks[0].item.splice(index, 1);
-//     }
-//   });
+    // $.each(userObject.racks[0].item, function(index, value) {
+    //   if(userObject.racks[0].item[index].picture === delObj) {
+    //     userObject.racks[0].item.splice(index, 1);
+    //     console.log(userObject)
+      // }
+    // })
+  // })})
+    // localStorage.setItem(currentKey, JSON.stringify(userObject));
 
-
-$(".picture").on('click',function() {
-  alert($(this).attr('src'));
-  delObj = $(this).attr('src');
-
-  var currentKey = JSON.parse(localStorage.getItem("currentKey"));
-  var userObject = JSON.parse(localStorage.getItem(currentKey));
-
-  $.each(userObject.racks[0].item, function(index, value) {
-    if(userObject.racks[0].item[index].picture === delObj) {
-      userObject.racks[0].item.splice(index, 1);
-    }
-  });
-
-  localStorage.setItem(currentKey, JSON.stringify(userObject));
-});
+  // })
+// })
+// ---------- END ----------
 
 
 // ---------- GENERATE OUTFIT BUTTON -----------
 $("#nav-3, #generate").on("click", function() {
   currentKey = JSON.parse(localStorage.getItem("currentKey"));
   var userObject = JSON.parse(localStorage.getItem(currentKey));
-  pickNextItem(userObject);
+  if(userObject.racks[0].item.length > 0) {
+    pickNextItem(userObject);
+  }
+  else {
+    alert("get more clothes you bum");
+  }
 });
 // ---------- END ----------
 
@@ -295,10 +302,25 @@ function rules(firstClothing, user) {
 
 
 // ----------CHAOS MADE ------------
+$("#chaos").on("click", function() {
+  var tempArray = new Array();
+  var currentKey = JSON.parse(localStorage.getItem("currentKey"));
+  var userObject = JSON.parse(localStorage.getItem(currentKey));
+  if(userObject.racks[0].item.length > 0 && userObject.racks[1].item.length > 0) {
+    pickFirstItem(userObject);
+    userRack = userObject.racks[1].item;
+    getClothing(userRack, userRack, "color", clothingColors);
+  }
+  else {
+    $("#generate").text("Try again...and get more clothes!")
+  }
+})
+// ---------- END ----------
+
 
 // ----------- SIGN OUT CONFIRM --------------
     $("#confirm").click(function(){
       localStorage.setItem("currentKey", null);
       alert("Where do you think you're going? Come back again soon!");
     });
-// ---------- END ----------_
+// ---------- END -----------
